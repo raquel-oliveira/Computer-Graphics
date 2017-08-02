@@ -9,7 +9,7 @@ Format ppm(P3)
 #include <stdio.h>
 
 #define MAX 255
-#define FILE_NAME "background.ppm"
+#define FILE_NAME "backgroundP3.ppm"
 #define X 200
 #define Y 100
 #define FORMAT "P3"
@@ -19,7 +19,8 @@ using namespace std;
 
 int main(){
   fstream image;
-  image.open(FILE_NAME, std::fstream::in | std::fstream::out | std::fstream::app);
+  cout << "This program will delete the old content of any file with name \" " << FILE_NAME << "\"\n";
+  image.open(FILE_NAME, std::fstream::out | std::fstream::app);
 
   int n_col(X); int n_row(Y);
 
