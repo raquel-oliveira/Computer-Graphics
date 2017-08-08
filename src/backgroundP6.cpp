@@ -3,7 +3,7 @@ Creation of a gradient image 100x200.
 Format ppm(P6)
 
 @author Raquel Oliveira
-@version 0.1
+@version 0.2
 */
 #include <iostream>
 #include <fstream>
@@ -18,9 +18,9 @@ Format ppm(P6)
 using namespace std;
 
 struct pixel {
-  int r;
-  int g;
-  int b;
+  char r;
+  char g;
+  char b;
 };
 
 int main(){
@@ -29,13 +29,11 @@ int main(){
   int n_col(X); int n_row(Y);
   int size = n_col*n_row;
   struct pixel grad[n_row][n_col];
-  char * buffer = new char[3*size];
 
   float g_c = (float)MAX/(float)n_row;
   float r_c = (float)MAX/(float)n_col;
 
   int r = 0; int g = MAX; int b = 0;
-
   //fill matrix of gradient color
   for(int i = 0; i < n_row; i++){
     g = MAX-(int)(g_c*i);
@@ -46,25 +44,14 @@ int main(){
       grad[i][j].b = b;
     }
   }
-
-  // fill buffer
-  int s = 0;
-  for(int i = 0; i < n_row; i++){
-    for(int j = 0; j < n_col; j++){
-      buffer[s*3] = static_cast<char>(grad[i][j].r);
-      buffer[s*3+1] = static_cast<char>(grad[i][j].g);
-      buffer[s*3+2] = static_cast<char>(grad[i][j].b);
-      s++;
-    }
-  }
-
   // Write image
   if (image){
     //Header
     image << FORMAT << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
     //Content
-    image.write((char *)buffer, size*3);
+    image.write((char *)grad, size*3);
     image.close();
+
   }
 
   return 0;
