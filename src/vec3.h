@@ -54,11 +54,11 @@ class vec3
 
         inline value_type length( void ) const
         {
-            // TODO
+            return sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]);
         }
         inline value_type squared_length( void ) const
         {
-            // TODO
+            return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
         }
         inline void make_unit_vector( void );
 };
