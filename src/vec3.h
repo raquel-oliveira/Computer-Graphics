@@ -1,9 +1,9 @@
 #ifndef _VEC3_H_
 #define _VEC3_H_
 
-#include <cmath>
+#include <cmath> // fabs
 #include <iostream>
-#include <cassert>
+#include <cassert> // assert
 
 /*!
  * Represents a 3D vector, that might be used to represent
