@@ -7,7 +7,7 @@
 #include <sstream>      // std::stringstream, std::stringbuf
 
 
-#define NAME "NOME"
+#define NAME "NAME"
 #define TYPE "TYPE"
 #define CODIFICATION "CODIFICATION"
 #define SIZE_WIDTH "WIDTH"
@@ -19,12 +19,19 @@
 #define MAX 255
 #define NB_CHANNEL 3
 
+//https://stackoverflow.com/questions/16329358/remove-spaces-from-a-string-in-c
+std::string removeSpaces(std::string input)
+{
+  input.erase(std::remove(input.begin(),input.end(),' '),input.end());
+  return input;
+}
+
 color interp(color p_0, color p_1, float x){
   return (1-x)*p_0 + x*p_1;
 }
 
-int main (void) {
-  //Default properties:
+int main (int argc, char* argv[]) {
+  //Default properties
   std::map<std::string, std::string> properties = { {NAME, "exemplo.ppm"},
                                                     {TYPE, "ppm"},
                                                     {CODIFICATION,"binary"},
@@ -37,17 +44,45 @@ int main (void) {
                                                   };
   std::string format = "P6";
 
+  //== READ FILE
+  if (argc < 2 ){
+    std::cerr << "Gibe me input, plx" << '\n';
+  }
+  std::string file_name = argv[1];
+  std::ifstream file(file_name.c_str(), std::ifstream::in);
+  std::string content = "";
+  if (file.is_open()) {
+    while(!file.eof()){
+      getline(file, content);
+      std::istringstream field(content);
+      //TODO Check if has comments to delete before the parse
+      int limiter = content.find_first_of("=");
+      if (limiter != std::string::npos) {
+        std::string key = content.substr(0,limiter);
+        key = removeSpaces(key); //TODO:: also put all Capital letter or Small Letter to make a better comparsion (INSENSITIVE VERIFICATION)
+        std::string val = content.substr(limiter+1,content.length());
+        if ( properties.find(key) == properties.end() ) {
+          //Nothing to do. Not a key defined.
+        } else {
+          //Update value
+          //TODO maybe use a token to check and etc
+          properties[key] = val;
+        }
+      }
+    }
+  } else{
+    std::cerr << "Not a correct file: " << file_name << '\n';
+  }
 
-  // TODO: Read input
+  //=== PARSE INFO
+  properties[NAME] = removeSpaces(properties[NAME]);
+  properties[CODIFICATION] = removeSpaces(properties[CODIFICATION]);
 
-
-  //=== Parse of input
   int n_col(std::stoi(properties[SIZE_WIDTH]));
   int n_row(std::stoi(properties[SIZE_HEIGHT]));
   int size = n_col*n_row;
 
   color upper_left(0,0,0), upper_right(0,0,0), lower_left(0,0,0), lower_right(0,0,0);
-  int value;
   std::stringstream ul( properties[UPPER_LEFT] ),
                     ur( properties[UPPER_RIGHT] ),
                     ll( properties[LOWER_LEFT] ),
@@ -61,8 +96,6 @@ int main (void) {
   }
 
   //TODO: Treat TYPE/CODIFICATION
-  // insentive verification!
-  //bool is_binary = (std::strcmp(properties[CODIFICATION], "binary")) ? true : false;
   bool is_binary;
   if (properties[CODIFICATION] == "binary"){
     is_binary = true;
@@ -70,7 +103,7 @@ int main (void) {
   else if (properties[CODIFICATION] == "ascii") {
     is_binary = false;
   } else{
-    std::cerr << "Codification not accepted" << std::endl;
+    std::cerr << "Codification not accepted (yet)" << std::endl;
   }
 
   if (is_binary){
