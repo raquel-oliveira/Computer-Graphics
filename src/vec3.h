@@ -9,7 +9,7 @@
  * Represents a 3D vector, that might be used to represent
  * points, directions, vectors, colors, offset
  */
-
+namespace utility {
 class vec3
 {
     public:
@@ -66,6 +66,7 @@ class vec3
 typedef vec3 color;
 typedef vec3 offset;
 typedef vec3 point3;
+}
 
 #include "vec3.inl"
 

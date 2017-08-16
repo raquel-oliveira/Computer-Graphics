@@ -1,5 +1,7 @@
 #include "vec3.h"
 
+using namespace utility;
+
 //
 //=== Member function implementation.
 //
