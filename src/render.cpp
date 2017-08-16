@@ -4,6 +4,7 @@
 #include <map>
 #include <fstream>
 #include "vec3.h"
+#include "ray.h"
 #include <sstream>      // std::stringstream, std::stringbuf
 
 
@@ -26,21 +27,57 @@ std::string removeSpaces(std::string input)
   return input;
 }
 
+float hit_sphere(const Ray & r_, const point3 & center_, float radius_){
+  auto dir = r_.get_direction();
+  auto orig = r_.get_origin();
+  vec3 oc = orig - center_;
+  float a = dot(dir,dir);
+  float b = 2.0 * dot(oc, dir);
+  float c = dot(oc, oc) - radius_*radius_;
+  float delta = b*b - 4*a*c;
+  int p1, p2;
+  if (delta < 0){ //didn't hit the sphere
+    return -1;
+  } else{
+    float p1 = (-b + sqrt(delta))/2*a;
+    float p2 = (-b - sqrt(delta))/2*a;
+    return p1 < p2? p1: p2;
+  }
+}
+
 color interp(color p_0, color p_1, float x){
   return (1-x)*p_0 + x*p_1;
 }
 
+color find_color(color upper_left, color upper_right,
+                 color lower_left, color lower_right,
+                 std::pair <int,int> ij,
+                 std::pair <float, float> dimension, //n_col, n_row (xy)
+                 const Ray& r_
+                 ){
+  if(hit_sphere(r_, vec3(0,0,-1), 0.5) != -1){
+    return vec3(173,234,234); //turquesa
+  }
+  int i = ij.first;
+  int j = ij.second;
+  int n_col = dimension.first;
+  int n_row = dimension.second;
+  color top = interp(upper_left, upper_right, (float)j/n_col);
+  color bottom = interp(lower_left, lower_right, (float)j/n_col);
+  return interp(top, bottom, (float)i/n_row);
+}
+
 int main (int argc, char* argv[]) {
   //Default properties
-  std::map<std::string, std::string> properties = { {NAME, "exemplo.ppm"},
-                                                    {TYPE, "ppm"},
-                                                    {CODIFICATION,"binary"},
-                                                    {SIZE_HEIGHT, "100"},
-                                                    {SIZE_WIDTH, "200"},
-                                                    {UPPER_LEFT, "255 0 255"}, //magenta
-                                                    {UPPER_RIGHT, "0 255 255"}, //cyan
-                                                    {LOWER_LEFT, "0 0 0"}, //black
-                                                    {LOWER_RIGHT, "255 255 0"} //yellow
+  std::map<std::string, std::string> properties = { {NAME, ""},
+                                                    {TYPE, ""},
+                                                    {CODIFICATION,""},
+                                                    {SIZE_HEIGHT, ""},
+                                                    {SIZE_WIDTH, ""},
+                                                    {UPPER_LEFT, ""},
+                                                    {UPPER_RIGHT, ""},
+                                                    {LOWER_LEFT, ""},
+                                                    {LOWER_RIGHT, ""}
                                                   };
   std::string format = "P6";
 
@@ -106,6 +143,11 @@ int main (int argc, char* argv[]) {
     std::cerr << "Codification not accepted (yet)" << std::endl;
   }
 
+  point3 lower_left_corner(-2.0, -1.0, -1.0);
+  vec3 horizontal(4.0,0.0,0.0);
+  vec3 vertical(0.0,2.0,0.0);
+  point3 origin(0.0,0.0,0.0);
+
   if (is_binary){
     format = "P6";
     std::ofstream image (properties[NAME], std::ios::out | std::ios::trunc | std::ios::binary);
@@ -115,9 +157,10 @@ int main (int argc, char* argv[]) {
 
     for(int i = 0; i < n_row; i++){
       for(int j = 0; j < n_col; j++){
-        color top = interp(upper_left, upper_right, (float)j/n_col);
-        color bottom = interp(lower_left, lower_right, (float)j/n_col);
-        color bi_int = interp(top, bottom, (float)i/n_row);
+        float u = (float)j/n_col;
+        float v = (float)i/n_row;
+        Ray r(origin, lower_left_corner+u*horizontal+v*vertical);
+        color bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r);
         buffer[add++] = char(bi_int.e[0]);
         buffer[add++] = char(bi_int.e[1]);
         buffer[add++] = char(bi_int.e[2]);
@@ -147,10 +190,11 @@ int main (int argc, char* argv[]) {
     image << format << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
     for(int i = 0; i < n_row; i++){
       for(int j = 0; j < n_col; j++){
-        color top = interp(upper_left, upper_right, (float)j/n_col);
-        color bottom = interp(lower_left, lower_right, (float)j/n_col);
-        color bi_int = interp(top, bottom, (float)i/n_row);
-          image << int(bi_int.e[0]) << " " << int(bi_int.e[1]) << " " << int(bi_int.e[2]) << " ";
+        float u = (float)j/n_col;
+        float v = (float)i/n_row;
+        Ray r(origin, lower_left_corner+u*horizontal+v*vertical);
+        color bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r);
+        image << int(bi_int.e[0]) << " " << int(bi_int.e[1]) << " " << int(bi_int.e[2]) << " ";
       }
       image << "\n";
     }
