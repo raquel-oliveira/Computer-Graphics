@@ -1,9 +1,9 @@
 NAME = background.ppm
 TYPE = PPM
 CODIFICATION = ascii
-WIDTH = 200
-HEIGHT = 100
-UPPER_LEFT = 255 0 255    # Cor do canto superior esquerdo (magenta)
-LOWER_LEFT = 0 0 0      # Cor do canto inferior esquerdo (black)
-UPPER_RIGHT = 0 255 255 # Cor do canto superior direito (cyan)
-LOWER_RIGHT = 255 255 0    # Cor do canto inferior direito (yellow)
+WIDTH = 2000
+HEIGHT = 1000
+UPPER_LEFT = 127 178 255    # Cor do canto superior esquerdo (blue)
+LOWER_LEFT = 255 255 255      # Cor do canto inferior esquerdo (white)
+UPPER_RIGHT = 127 178 255 # Cor do canto superior direito (blue)
+LOWER_RIGHT = 255 255 255    # Cor do canto inferior direito (white)

@@ -28,7 +28,7 @@ std::string removeSpaces(std::string input)
   return input;
 }
 
-bool hit_sphere(const Ray & r_, const sphere s){
+float hit_sphere(const Ray & r_, const sphere s){
   auto dir = r_.get_direction();
   auto orig = r_.get_origin();
   vec3 oc = orig - s.center();
@@ -36,10 +36,13 @@ bool hit_sphere(const Ray & r_, const sphere s){
   float b = 2.0 * dot(oc, dir);
   float c = dot(oc, oc) - s.radius()*s.radius();
   float delta = b*b - 4*a*c;
+  int p1, p2;
   if (delta < 0){ //didn't hit the sphere
-    return false;
+    return -1;
   } else{
-    return true;
+    float p1 = (-b + sqrt(delta))/(2*a);
+    float p2 = (-b - sqrt(delta))/(2*a);
+    return p1 < p2? p1: p2;
   }
 }
 
@@ -54,8 +57,11 @@ color3 find_color(color3 upper_left, color3 upper_right,
                  const Ray& r_,
                  sphere s_
                  ){
-  if(hit_sphere(r_, s_)){
-    return s_.color();
+  float t = hit_sphere(r_, s_);
+  if( t != -1){
+    //return s_.color();
+    vec3 n = unit_vector(r_.point_at(t) - s_.center());
+    return 255*(s_.radius()*vec3(n.x()+1, n.y()+1, n.z()+1)); //return 255*(s_.radius()*(n+1));
   }
   int i = ij.first;
   int j = ij.second;
@@ -145,7 +151,7 @@ int main (int argc, char* argv[]) {
   point3 lower_left_corner(-2.0, -1.0, -1.0);
   vec3 horizontal(4.0,0.0,0.0);  // Horizontal dimension of the plane
   vec3 vertical(0.0,2.0,0.0); // Vertical dimension of the plane
-  point3 origin(0.0,0.0,0.0); // the camera's origin
+  point3 origin(0,0,0); // the camera's origin
 
   sphere sp(point3(0,0,-1), 0.5, color3(255,255,255)); //white sphere
 
@@ -156,11 +162,11 @@ int main (int argc, char* argv[]) {
     char * buffer = (char*) malloc(size*3*sizeof(char));
     int add = 0;
 
-    for(int i = 0; i < n_row; i++){
+    for(int i = 0; i < n_row; i++){ //for(int i = n_row-1; i >=0; i--){
       for(int j = 0; j < n_col; j++){
-        float u = (float)j/n_col;
-        float v = (float)i/n_row;
-        Ray r(origin, lower_left_corner+u*horizontal+v*vertical);
+        float u = (float)j/(float)n_col;
+        float v = (float)i/(float)n_row;
+        Ray r(origin, lower_left_corner+(u*horizontal)+(v*vertical));
         color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
         buffer[add++] = char(bi_int.e[0]);
         buffer[add++] = char(bi_int.e[1]);
@@ -189,10 +195,10 @@ int main (int argc, char* argv[]) {
       std::cout << "vixe, problem with " << properties[NAME] << std::endl;
     }
     image << format << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
-    for(int i = 0; i < n_row; i++){
+    for(int i = 0; i < n_row; i++){ //for(int i = n_row-1; i >=0; i--){
       for(int j = 0; j < n_col; j++){
-        float u = (float)j/n_col;
-        float v = (float)i/n_row;
+        float u = (float)j/(float)n_col;
+        float v = (float)i/(float)n_row;
         Ray r(origin, lower_left_corner+u*horizontal+v*vertical);
         color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
         image << int(bi_int.e[0]) << " " << int(bi_int.e[1]) << " " << int(bi_int.e[2]) << " ";
