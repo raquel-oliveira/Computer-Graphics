@@ -69,7 +69,7 @@ Color3 find_color(Color3 upper_left, Color3 upper_right,
   int n_row = dimension.second;
   Color3 top = interp(upper_left, upper_right, (float)j/n_col);
   Color3 bottom = interp(lower_left, lower_right, (float)j/n_col);
-  return interp(top, bottom, (float)i/n_row);
+  return interp(top, bottom, (float)(n_row-i)/(float)n_row);
 }
 
 int main (int argc, char* argv[]) {
