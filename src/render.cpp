@@ -162,7 +162,7 @@ int main (int argc, char* argv[]) {
     char * buffer = (char*) malloc(size*3*sizeof(char));
     int add = 0;
 
-    for(int i = 0; i < n_row; i++){ //for(int i = n_row-1; i >=0; i--){
+    for(int i = n_row-1; i >=0; i--){
       for(int j = 0; j < n_col; j++){
         float u = (float)j/(float)n_col;
         float v = (float)i/(float)n_row;
@@ -195,7 +195,7 @@ int main (int argc, char* argv[]) {
       std::cout << "vixe, problem with " << properties[NAME] << std::endl;
     }
     image << format << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
-    for(int i = 0; i < n_row; i++){ //for(int i = n_row-1; i >=0; i--){
+    for(int i = n_row-1; i >=0; i--){
       for(int j = 0; j < n_col; j++){
         float u = (float)j/(float)n_col;
         float v = (float)i/(float)n_row;
