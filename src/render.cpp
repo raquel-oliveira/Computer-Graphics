@@ -5,6 +5,7 @@
 #include <fstream>
 #include "../include/vec3.h"
 #include "../include/ray.h"
+#include "../include/sphere.h"
 #include <sstream>      // std::stringstream, std::stringbuf
 
 
@@ -27,43 +28,41 @@ std::string removeSpaces(std::string input)
   return input;
 }
 
-float hit_sphere(const Ray & r_, const point3 & center_, float radius_){
+bool hit_sphere(const Ray & r_, const sphere s){
   auto dir = r_.get_direction();
   auto orig = r_.get_origin();
-  vec3 oc = orig - center_;
+  vec3 oc = orig - s.center();
   float a = dot(dir,dir);
   float b = 2.0 * dot(oc, dir);
-  float c = dot(oc, oc) - radius_*radius_;
+  float c = dot(oc, oc) - s.radius()*s.radius();
   float delta = b*b - 4*a*c;
-  int p1, p2;
   if (delta < 0){ //didn't hit the sphere
-    return -1;
+    return false;
   } else{
-    float p1 = (-b + sqrt(delta))/2*a;
-    float p2 = (-b - sqrt(delta))/2*a;
-    return p1 < p2? p1: p2;
+    return true;
   }
 }
 
-color interp(color p_0, color p_1, float x){
+color3 interp(color3 p_0, color3 p_1, float x){
   return (1-x)*p_0 + x*p_1;
 }
 
-color find_color(color upper_left, color upper_right,
-                 color lower_left, color lower_right,
+color3 find_color(color3 upper_left, color3 upper_right,
+                 color3 lower_left, color3 lower_right,
                  std::pair <int,int> ij,
                  std::pair <float, float> dimension, //n_col, n_row (xy)
-                 const Ray& r_
+                 const Ray& r_,
+                 sphere s_
                  ){
-  if(hit_sphere(r_, vec3(0,0,-1), 0.5) != -1){
-    return vec3(173,234,234); //turquesa
+  if(hit_sphere(r_, s_)){
+    return s_.color();
   }
   int i = ij.first;
   int j = ij.second;
   int n_col = dimension.first;
   int n_row = dimension.second;
-  color top = interp(upper_left, upper_right, (float)j/n_col);
-  color bottom = interp(lower_left, lower_right, (float)j/n_col);
+  color3 top = interp(upper_left, upper_right, (float)j/n_col);
+  color3 bottom = interp(lower_left, lower_right, (float)j/n_col);
   return interp(top, bottom, (float)i/n_row);
 }
 
@@ -119,7 +118,7 @@ int main (int argc, char* argv[]) {
   int n_row(std::stoi(properties[SIZE_HEIGHT]));
   int size = n_col*n_row;
 
-  color upper_left(0,0,0), upper_right(0,0,0), lower_left(0,0,0), lower_right(0,0,0);
+  color3 upper_left(0,0,0), upper_right(0,0,0), lower_left(0,0,0), lower_right(0,0,0);
   std::stringstream ul( properties[UPPER_LEFT] ),
                     ur( properties[UPPER_RIGHT] ),
                     ll( properties[LOWER_LEFT] ),
@@ -144,9 +143,11 @@ int main (int argc, char* argv[]) {
   }
 
   point3 lower_left_corner(-2.0, -1.0, -1.0);
-  vec3 horizontal(4.0,0.0,0.0);
-  vec3 vertical(0.0,2.0,0.0);
-  point3 origin(0.0,0.0,0.0);
+  vec3 horizontal(4.0,0.0,0.0);  // Horizontal dimension of the plane
+  vec3 vertical(0.0,2.0,0.0); // Vertical dimension of the plane
+  point3 origin(0.0,0.0,0.0); // the camera's origin
+
+  sphere sp(point3(0,0,-1), 0.5, color3(255,255,255)); //white sphere
 
   if (is_binary){
     format = "P6";
@@ -160,7 +161,7 @@ int main (int argc, char* argv[]) {
         float u = (float)j/n_col;
         float v = (float)i/n_row;
         Ray r(origin, lower_left_corner+u*horizontal+v*vertical);
-        color bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r);
+        color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
         buffer[add++] = char(bi_int.e[0]);
         buffer[add++] = char(bi_int.e[1]);
         buffer[add++] = char(bi_int.e[2]);
@@ -193,7 +194,7 @@ int main (int argc, char* argv[]) {
         float u = (float)j/n_col;
         float v = (float)i/n_row;
         Ray r(origin, lower_left_corner+u*horizontal+v*vertical);
-        color bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r);
+        color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
         image << int(bi_int.e[0]) << " " << int(bi_int.e[1]) << " " << int(bi_int.e[2]) << " ";
       }
       image << "\n";

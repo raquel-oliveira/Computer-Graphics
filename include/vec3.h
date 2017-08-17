@@ -63,7 +63,7 @@ class vec3
         inline void make_unit_vector( void );
 };
 
-typedef vec3 color;
+typedef vec3 color3;
 typedef vec3 offset;
 typedef vec3 point3;
 }
