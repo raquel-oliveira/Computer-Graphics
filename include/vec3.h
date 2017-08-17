@@ -10,7 +10,7 @@
  * points, directions, vectors, colors, offset
  */
 namespace utility {
-class vec3
+class Vec3
 {
     public:
         //=== Aliases
@@ -21,7 +21,7 @@ class vec3
         value_type e[ 3 ];
 
         //=== Special members
-        vec3( value_type e0_=0.f, value_type e1_=0.f, value_type e2_=0.f )
+        Vec3( value_type e0_=0.f, value_type e1_=0.f, value_type e2_=0.f )
             : e{ e0_, e1_, e2_ }
         { /* empty */ }
 
@@ -41,16 +41,16 @@ class vec3
         //=== Algebraic operators
 
         // Unary '+'
-        inline const vec3& operator+( void ) const { return *this; }
+        inline const Vec3& operator+( void ) const { return *this; }
         // Unary '-'
-        inline vec3 operator-( void ) const { return vec3( -e[X], -e[Y], -e[Z] ); }
+        inline Vec3 operator-( void ) const { return Vec3( -e[X], -e[Y], -e[Z] ); }
 
-        inline vec3& operator+=( const vec3& );
-        inline vec3& operator-=( const vec3& );
-        inline vec3& operator*=( const vec3& );
-        inline vec3& operator/=( const vec3& );
-        inline vec3& operator*=( const value_type );
-        inline vec3& operator/=( const value_type );
+        inline Vec3& operator+=( const Vec3& );
+        inline Vec3& operator-=( const Vec3& );
+        inline Vec3& operator*=( const Vec3& );
+        inline Vec3& operator/=( const Vec3& );
+        inline Vec3& operator*=( const value_type );
+        inline Vec3& operator/=( const value_type );
 
         inline value_type length( void ) const
         {
@@ -63,9 +63,9 @@ class vec3
         inline void make_unit_vector( void );
 };
 
-typedef vec3 color3;
-typedef vec3 offset;
-typedef vec3 point3;
+typedef Vec3 Color3;
+typedef Vec3 Offset;
+typedef Vec3 Point3;
 }
 
 #include "vec3.inl"

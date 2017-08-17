@@ -7,21 +7,21 @@ using namespace utility;
 
 class Ray {
   private:
-    point3 O; //the origin of the Ray
-    vec3 D; //the ray's direction
+    Point3 O; //the origin of the Ray
+    Vec3 D; //the ray's direction
 
   public:
     // Alias
     typedef float real_type;
-    Ray(point3 o_=point3(), vec3 d_=vec3())
+    Ray(Point3 o_=Point3(), Vec3 d_=Vec3())
       : O(o_)
       , D(d_)
     {}
 
     // Access method
-    inline vec3 get_direction (void) const { return D;}
-    inline vec3 get_origin (void) const { return O;}
-    point3 point_at (real_type t_) const {
+    inline Vec3 get_direction (void) const { return D;}
+    inline Vec3 get_origin (void) const { return O;}
+    Point3 point_at (real_type t_) const {
       return O + t_ * D; // parametric equation of the ray
     }
 
