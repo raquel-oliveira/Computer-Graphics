@@ -88,4 +88,6 @@ Session.vim
 # auto-generated tag files
 tags
 
+### Build ###
+build/*
 # End of https://www.gitignore.io/api/c,vim,c++

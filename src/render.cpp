@@ -3,8 +3,8 @@
 //#include <boost/algorithm/string.hpp> // Case insensitive string comparison in C++
 #include <map>
 #include <fstream>
-#include "vec3.h"
-#include "ray.h"
+#include "../include/vec3.h"
+#include "../include/ray.h"
 #include <sstream>      // std::stringstream, std::stringbuf
 
 
