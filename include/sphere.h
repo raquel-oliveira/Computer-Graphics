@@ -3,10 +3,11 @@
 
 #include "vec3.h"
 #include "ray.h"
+#include "object.h"
 
 using namespace utility;
 
-class Sphere {
+class Sphere : public Object {
   private:
       Point3 center_;
       float radius_;
@@ -26,7 +27,9 @@ class Sphere {
       inline float radius() const { return radius_; }
       inline Color3 color() const { return color_; }
 
-      float hit(const Ray &r_);
+      bool hit(const Ray &r_, float t_min, float t_max, Hit& hit) const;
+
 };
+
 
 #endif

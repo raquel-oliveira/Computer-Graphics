@@ -1,6 +1,6 @@
-#include "sphere.h"
+#include "../include/sphere.h"
 
-float Sphere::hit(const Ray &r_) {
+bool Sphere::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
   auto dir = r_.get_direction();
   auto orig = r_.get_origin();
 
@@ -9,18 +9,23 @@ float Sphere::hit(const Ray &r_) {
   float b = 2.0 * dot(oc, dir);
   float c = dot(oc, oc) - radius_*radius_;
   float delta = b*b - 4*a*c;
-  int t1, t2;
   if (delta < 0){ //didn't hit the Sphere
-    return -1;
+    return false;
   } else{
-    float t1 = (-b + sqrt(delta))/(2*a);
-    float t2 = (-b - sqrt(delta))/(2*a);
-    if (t1 > 0){
-      if (t1 < t2) { return t1;}
-      else {
-        if (t2 > 0) return t2;
-        else return -1; //if both t1 and t2 < 0, can not see in the view
-      }
+    float t = (-b - sqrt(delta))/(2*a);
+    if (t < t_max && t > t_min) {
+      hit.t = t;
+      hit.point = r_.point_at(hit.t);
+      hit.normal = (hit.point - center_) / radius_;
+      return true;
     }
+    t = (-b + sqrt(delta))/(2*a);
+    if (t < t_max && t > t_min) {
+      hit.t = t;
+      hit.point = r_.point_at(hit.t);
+      hit.normal = (hit.point - center_) / radius_;
+      return true;
+    }
+    return false; // can not see in this perspective
   }
 }

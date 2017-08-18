@@ -1,7 +1,10 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
+#define TMIN 0
+#define TMAX 10000
 #include "vec3.h"
+#include "object.h" // hit
 
 //https://stackoverflow.com/questions/16329358/remove-spaces-from-a-string-in-c
 std::string removeSpaces(std::string input)
@@ -21,11 +24,11 @@ Color3 find_color(Color3 upper_left, Color3 upper_right,
                  const Ray& r_,
                  Sphere s_
                  ){
-  float t = s_.hit(r_);
-  if( t != -1){
-    //return s_.color();
-    Vec3 n = unit_vector(r_.point_at(t) - s_.center());
-    return 255*(s_.radius()*Vec3(n.x()+1, n.y()+1, n.z()+1)); //return 255*(s_.radius()*(n+1));
+  Hit t;
+  if(s_.hit(r_, TMIN, TMAX, t)){
+    //normal gives a number between -1 and 1, an we want between 0 and 1
+    Vec3 n = Vec3((t.normal.x()+1), (t.normal.y()+1), (t.normal.z()+1)) * s_.radius();
+    return 255*n;
   }
   int i = ij.first;
   int j = ij.second;
