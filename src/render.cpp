@@ -50,7 +50,6 @@ int main (int argc, char* argv[]) {
 
   int n_col(std::stoi(properties[SIZE_WIDTH]));
   int n_row(std::stoi(properties[SIZE_HEIGHT]));
-  int size = n_col*n_row;
 
   Color3 upper_left(0,0,0), upper_right(0,0,0), lower_left(0,0,0), lower_right(0,0,0);
   std::stringstream ul( properties[UPPER_LEFT] ),
@@ -76,10 +75,13 @@ int main (int argc, char* argv[]) {
     std::cerr << "Codification not accepted (yet)" << std::endl;
   }
 
+  //Image image = new Image(properties[NAME], n_col, n_row);
+  int size = n_col*n_row;
   Camera* c = new Camera();
   Sphere sp(Point3(0,0,-1), 0.5, Color3(255,255,255)); //white Sphere
 
   if (is_binary){
+    //image.create_by_binary();
     format = "P6";
     std::ofstream image (properties[NAME], std::ios::out | std::ios::trunc | std::ios::binary);
 
@@ -112,6 +114,7 @@ int main (int argc, char* argv[]) {
   }
 
   else { //is ascii
+    //image.create_by_ascii();
     format = "P3";
     std::ofstream image (properties[NAME], std::fstream::out | std::ios::trunc );
 
