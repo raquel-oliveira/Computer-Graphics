@@ -1,76 +1,4 @@
-#include <iostream>
-#include <string> // stoi (string to int)
-//#include <boost/algorithm/string.hpp> // Case insensitive string comparison in C++
-#include <map>
-#include <fstream>
-#include "../include/vec3.h"
-#include "../include/ray.h"
-#include "../include/sphere.h"
-#include <sstream>      // std::stringstream, std::stringbuf
-
-
-#define NAME "NAME"
-#define TYPE "TYPE"
-#define CODIFICATION "CODIFICATION"
-#define SIZE_WIDTH "WIDTH"
-#define SIZE_HEIGHT "HEIGHT"
-#define UPPER_LEFT "UPPER_LEFT"
-#define LOWER_LEFT "LOWER_LEFT"
-#define UPPER_RIGHT "UPPER_RIGHT"
-#define LOWER_RIGHT "LOWER_RIGHT"
-#define MAX 255
-#define NB_CHANNEL 3
-
-//https://stackoverflow.com/questions/16329358/remove-spaces-from-a-string-in-c
-std::string removeSpaces(std::string input)
-{
-  input.erase(std::remove(input.begin(),input.end(),' '),input.end());
-  return input;
-}
-
-float hit_Sphere(const Ray & r_, const Sphere s){
-  auto dir = r_.get_direction();
-  auto orig = r_.get_origin();
-  Vec3 oc = orig - s.center();
-  float a = dot(dir,dir);
-  float b = 2.0 * dot(oc, dir);
-  float c = dot(oc, oc) - s.radius()*s.radius();
-  float delta = b*b - 4*a*c;
-  int p1, p2;
-  if (delta < 0){ //didn't hit the Sphere
-    return -1;
-  } else{
-    float p1 = (-b + sqrt(delta))/(2*a);
-    float p2 = (-b - sqrt(delta))/(2*a);
-    return p1 < p2? p1: p2;
-  }
-}
-
-Color3 interp(Color3 p_0, Color3 p_1, float x){
-  return (1-x)*p_0 + x*p_1;
-}
-
-Color3 find_color(Color3 upper_left, Color3 upper_right,
-                 Color3 lower_left, Color3 lower_right,
-                 std::pair <int,int> ij,
-                 std::pair <float, float> dimension, //n_col, n_row (xy)
-                 const Ray& r_,
-                 Sphere s_
-                 ){
-  float t = hit_Sphere(r_, s_);
-  if( t != -1){
-    //return s_.color();
-    Vec3 n = unit_vector(r_.point_at(t) - s_.center());
-    return 255*(s_.radius()*Vec3(n.x()+1, n.y()+1, n.z()+1)); //return 255*(s_.radius()*(n+1));
-  }
-  int i = ij.first;
-  int j = ij.second;
-  int n_col = dimension.first;
-  int n_row = dimension.second;
-  Color3 top = interp(upper_left, upper_right, (float)j/n_col);
-  Color3 bottom = interp(lower_left, lower_right, (float)j/n_col);
-  return interp(top, bottom, (float)(n_row-i)/(float)n_row);
-}
+#include "../include/render.h"
 
 int main (int argc, char* argv[]) {
   //Default properties
@@ -138,7 +66,7 @@ int main (int argc, char* argv[]) {
   }
 
   //TODO: Treat TYPE/CODIFICATION
-  bool is_binary;
+  bool is_binary = false;
   if (properties[CODIFICATION] == "binary"){
     is_binary = true;
   }

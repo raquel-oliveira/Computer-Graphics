@@ -2,6 +2,7 @@
 #define _SPHERE_H_
 
 #include "vec3.h"
+#include "ray.h"
 
 using namespace utility;
 
@@ -25,6 +26,7 @@ class Sphere {
       inline float radius() const { return radius_; }
       inline Color3 color() const { return color_; }
 
+      float hit(const Ray &r_);
 };
 
 #endif
