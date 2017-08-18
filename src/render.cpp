@@ -76,11 +76,7 @@ int main (int argc, char* argv[]) {
     std::cerr << "Codification not accepted (yet)" << std::endl;
   }
 
-  Point3 lower_left_corner(-2.0, -1.0, -1.0);
-  Vec3 horizontal(4.0,0.0,0.0);  // Horizontal dimension of the plane
-  Vec3 vertical(0.0,2.0,0.0); // Vertical dimension of the plane
-  Point3 origin(0,0,0); // the camera's origin
-
+  Camera* c = new Camera();
   Sphere sp(Point3(0,0,-1), 0.5, Color3(255,255,255)); //white Sphere
 
   if (is_binary){
@@ -94,7 +90,7 @@ int main (int argc, char* argv[]) {
       for(int j = 0; j < n_col; j++){
         float u = (float)j/(float)n_col;
         float v = (float)i/(float)n_row;
-        Ray r(origin, lower_left_corner+(u*horizontal)+(v*vertical));
+        Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
         Color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
         buffer[add++] = char(bi_int.e[0]);
         buffer[add++] = char(bi_int.e[1]);
@@ -127,7 +123,7 @@ int main (int argc, char* argv[]) {
       for(int j = 0; j < n_col; j++){
         float u = (float)j/(float)n_col;
         float v = (float)i/(float)n_row;
-        Ray r(origin, lower_left_corner+u*horizontal+v*vertical);
+        Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
         Color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
         image << int(bi_int.e[0]) << " " << int(bi_int.e[1]) << " " << int(bi_int.e[2]) << " ";
       }

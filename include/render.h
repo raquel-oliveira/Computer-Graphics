@@ -11,6 +11,7 @@
 #include "sphere.h"
 #include "util.h"
 #include <sstream>      // std::stringstream, std::stringbuf
+#include "camera.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"
