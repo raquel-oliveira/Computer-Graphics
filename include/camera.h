@@ -13,8 +13,8 @@ class Camera{
   public:
     Camera()
      : lower_left_corner(-2.0, -1.0, -1.0)
-     , horizontal_axis(4.0,0.0,0.0)
      , vertical_axis(0.0,2.0,0.0)
+     , horizontal_axis(4.0,0.0,0.0)
      , origin_point(0,0,0)
     {}
 
@@ -24,7 +24,7 @@ class Camera{
       ,horizontal_axis(h)
       ,origin_point(origin_)
     {}
-      
+
     inline Vec3 llc() const { return lower_left_corner; }
     inline Vec3 vertical() const { return vertical_axis; }
     inline Vec3 horizontal() const { return horizontal_axis; }

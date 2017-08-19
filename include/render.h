@@ -12,6 +12,8 @@
 #include "util.h"
 #include <sstream>      // std::stringstream, std::stringbuf
 #include "camera.h"
+#include "object.h"
+#include <vector>
 
 #define NAME "NAME"
 #define TYPE "TYPE"

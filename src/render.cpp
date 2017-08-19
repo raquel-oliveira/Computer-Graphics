@@ -51,17 +51,18 @@ int main (int argc, char* argv[]) {
   int n_col(std::stoi(properties[SIZE_WIDTH]));
   int n_row(std::stoi(properties[SIZE_HEIGHT]));
 
-  Color3 upper_left(0,0,0), upper_right(0,0,0), lower_left(0,0,0), lower_right(0,0,0);
+  background bg;
   std::stringstream ul( properties[UPPER_LEFT] ),
                     ur( properties[UPPER_RIGHT] ),
                     ll( properties[LOWER_LEFT] ),
                     lr( properties[LOWER_RIGHT] );
 
   for (int i = 0; i < NB_CHANNEL; i++){
-    ul >> upper_left.e[i];
-    ur >> upper_right.e[i];
-    ll >> lower_left.e[i];
-    lr >> lower_right.e[i];
+
+    ul >> bg.upper_left.e[i];
+    ur >> bg.upper_right.e[i];
+    ll >> bg.lower_left.e[i];
+    lr >> bg.lower_right.e[i];
   }
 
   //TODO: Treat TYPE/CODIFICATION
@@ -78,7 +79,12 @@ int main (int argc, char* argv[]) {
   //Image image = new Image(properties[NAME], n_col, n_row);
   int size = n_col*n_row;
   Camera* c = new Camera();
-  Sphere sp(Point3(0,0,-1), 0.5, Color3(255,255,255)); //white Sphere
+
+  std::vector<Object*> objects;
+  objects.push_back(new Sphere((Point3(0,-100.5,-3)), 99.f));
+  objects.push_back(new Sphere((Point3(0.3,0,-1)), 0.4));
+  objects.push_back(new Sphere((Point3(0,1,-2)), 0.6));
+  objects.push_back(new Sphere((Point3(-0.4,0,-3)), 0.7));
 
   if (is_binary){
     //image.create_by_binary();
@@ -93,7 +99,7 @@ int main (int argc, char* argv[]) {
         float u = (float)j/(float)n_col;
         float v = (float)i/(float)n_row;
         Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-        Color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
+        Color3 bi_int = find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
         buffer[add++] = char(bi_int.e[0]);
         buffer[add++] = char(bi_int.e[1]);
         buffer[add++] = char(bi_int.e[2]);
@@ -127,7 +133,7 @@ int main (int argc, char* argv[]) {
         float u = (float)j/(float)n_col;
         float v = (float)i/(float)n_row;
         Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-        Color3 bi_int = find_color(upper_left, upper_right, lower_left, lower_right, std::make_pair(i,j), std::make_pair(n_col,n_row), r, sp);
+        Color3 bi_int = find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
         image << int(bi_int.e[0]) << " " << int(bi_int.e[1]) << " " << int(bi_int.e[2]) << " ";
       }
       image << "\n";

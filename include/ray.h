@@ -20,7 +20,7 @@ class Ray {
 
     // Access method
     inline Vec3 get_direction (void) const { return D;}
-    inline Vec3 get_origin (void) const { return O;}
+    inline Point3 get_origin (void) const { return O;}
     Point3 point_at (real_type t_) const {
       return O + t_ * D; // parametric equation of the ray
     }

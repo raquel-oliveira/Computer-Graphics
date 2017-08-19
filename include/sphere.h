@@ -17,11 +17,17 @@ class Sphere : public Object {
       Sphere():
         center_(0,0,0), radius_(0.5) , color_(255,0,0){}
 
-      Sphere(Point3 p_0=Point3(), float r_0 = float(), Color3 c_0=Color3())
+      Sphere(Point3 p_0=Point3(), float r_0 = float())
+        : center_(p_0)
+        , radius_(r_0) {
+        color_ = Color3(255,0,0);
+      }
+
+      /*Sphere(Point3 p_0=Point3(), float r_0 = float(), Color3 c_0=Color3())
         : center_(p_0)
         , radius_(r_0)
         , color_(c_0)
-      {}
+      {}*/
 
       inline Point3 center() const { return center_; }
       inline float radius() const { return radius_; }

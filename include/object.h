@@ -9,7 +9,7 @@ struct Hit {
     Vec3 normal;
 };
 
-class Object{
+class Object {
   public :
     virtual bool hit(const Ray &ray, float t_min, float t_max, Hit& hit) const = 0;
 };
