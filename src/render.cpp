@@ -26,7 +26,7 @@ int main (int argc, char* argv[]) {
       getline(file, content);
       std::istringstream field(content);
       //TODO Check if has comments to delete before the parse
-      int limiter = content.find_first_of("=");
+      size_t limiter = content.find_first_of("=");
       if (limiter != std::string::npos) {
         std::string key = content.substr(0,limiter);
         key = removeSpaces(key); //TODO:: also put all Capital letter or Small Letter to make a better comparsion (INSENSITIVE VERIFICATION)
@@ -76,8 +76,7 @@ int main (int argc, char* argv[]) {
     std::cerr << "Codification not accepted (yet)" << std::endl;
   }
 
-  //Image image = new Image(properties[NAME], n_col, n_row);
-  int size = n_col*n_row;
+  Image image(properties[NAME], n_col, n_row);
   Camera* c = new Camera();
 
   std::vector<Object*> objects;
@@ -86,58 +85,18 @@ int main (int argc, char* argv[]) {
   objects.push_back(new Sphere((Point3(0,1,-2)), 0.6));
   objects.push_back(new Sphere((Point3(-0.4,0,-3)), 0.7));
 
-  if (is_binary){
-    //image.create_by_binary();
-    format = "P6";
-    std::ofstream image (properties[NAME], std::ios::out | std::ios::trunc | std::ios::binary);
-
-    char * buffer = (char*) malloc(size*3*sizeof(char));
-    int add = 0;
-
-    for(int i = n_row-1; i >=0; i--){
-      for(int j = 0; j < n_col; j++){
-        float u = (float)j/(float)n_col;
-        float v = (float)i/(float)n_row;
-        Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-        Color3 bi_int = find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
-        buffer[add++] = char(bi_int.e[0]);
-        buffer[add++] = char(bi_int.e[1]);
-        buffer[add++] = char(bi_int.e[2]);
-      }
+  for(int i = 0; i < n_row; i++){
+    for(int j = 0; j < n_col; j++){
+      float u = (float)j/(float)n_col;
+      float v = 1 - (float)(i)/(float)n_row;
+      Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
+      image(i, j) = find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
     }
-
-    if (image){
-      //Header
-      image << format << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
-      //Content
-      image.write((char *)buffer, size*3);
-      delete[] buffer;
-      image.close();
-    } else {
-      std::cout << "vixe, problem with " << properties[NAME] << std::endl;
-    }
-
   }
 
-  else { //is ascii
-    //image.create_by_ascii();
-    format = "P3";
-    std::ofstream image (properties[NAME], std::fstream::out | std::ios::trunc );
-
-    if(!image){
-      std::cout << "vixe, problem with " << properties[NAME] << std::endl;
-    }
-    image << format << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
-    for(int i = n_row-1; i >=0; i--){
-      for(int j = 0; j < n_col; j++){
-        float u = (float)j/(float)n_col;
-        float v = (float)i/(float)n_row;
-        Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-        Color3 bi_int = find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
-        image << int(bi_int.e[0]) << " " << int(bi_int.e[1]) << " " << int(bi_int.e[2]) << " ";
-      }
-      image << "\n";
-    }
-    image.close();
+  if (is_binary){
+    image.create_by_binary();
+  } else { //is ascii
+    image.create_by_ascii();
   }
 }

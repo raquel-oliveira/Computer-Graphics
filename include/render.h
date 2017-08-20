@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "object.h"
 #include <vector>
+#include "image.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"

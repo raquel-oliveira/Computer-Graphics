@@ -7,41 +7,41 @@
 
 #define MAX 255
 #define NB_CHANNEL 3
-#define NAME "background"
+#define NAME_IMAGE "background"
 
 class Image {
   private:
     std::string name;
     int width_size; //largura
     int height_size; //altura
-    //char* pixels; //maybe color3?
-    //Color3* pixels_color;
+    Color3* pixels;
 
   public:
     Image(std::string name_, int w, int h)
       : name(name_)
       , width_size(w)
       , height_size(h){
-      //  pixels = (char*) malloc(w*h*NB_CHANNEL*sizeof(char));
-      //  pixels_color = malloc(w*h*sizeof(Color3));
+        pixels = new Color3[w*h];
         name = name;
       }
 
     Image(int w, int h)
       : width_size(w)
       , height_size(h){
-      //  pixels = (char*) malloc(w*h*NB_CHANNEL*sizeof(char));
-      //  pixels_color = malloc(w*h*sizeof(Color3));
-        name = NAME;
+        pixels = new Color3[w*h];
+        name = NAME_IMAGE;
       }
 
     ~Image () {
-      //delete [] pixels;
-      //delete [] pixels_color;
+      delete [] pixels;
     }
 
     inline int width() const { return width_size; }
     inline int height() const { return height_size; }
+
+    inline Color3& operator()(int i, int j){ //By row
+      return pixels[i*width_size+j];
+    }
 
     void create_by_binary();
     void create_by_ascii();

@@ -58,7 +58,7 @@ Color3 find_color(background bg,
   int n_row = dimension.second;
   Color3 top = interp(bg.upper_left, bg.upper_right, (float)j/n_col);
   Color3 bottom = interp(bg.lower_left, bg.lower_right, (float)j/n_col);
-  return interp(top, bottom, (float)(n_row-i)/(float)n_row);
+  return interp(top, bottom, (float)(i)/(float)n_row);
 }
 
 #endif

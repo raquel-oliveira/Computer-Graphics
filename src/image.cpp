@@ -1,8 +1,5 @@
 #include "../include/image.h"
 
-//TODO: Don't create a buffer. Use and update PIXELS from Image.
-
-
 void Image::create_by_binary(){
   int n_col(width_size);
   int n_row(height_size);
@@ -12,9 +9,10 @@ void Image::create_by_binary(){
     std::cerr << "vixe, problem with " << name << std::endl;
   }
   im << "P6" << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
-  for(int i = n_row-1; i >=0; i--){
+  for(int i = 0; i < n_row; i++){
     for(int j = 0; j < n_col; j++){
-      //USE PIXEL INFO
+      Color3& ij = (*this)(i,j);
+      im << (char)ij.r()  << (char)ij.g() << (char)ij.b();
     }
   }
   im.close();
@@ -29,9 +27,10 @@ void Image::create_by_ascii(){
     std::cerr << "vixe, problem with " << name << std::endl;
   }
   im << "P3" << "\n" << n_col << " " << n_row << "\n" << MAX << "\n";
-  for(int i = n_row-1; i >=0; i--){
+  for(int i = 0; i < n_row; i++){
     for(int j = 0; j < n_col; j++){
-      //USE PIXEL INFO
+      Color3& ij = (*this)(i,j);
+      im << (int)ij.r() << " " << (int)ij.g() <<  " " << (int)ij.b() << " ";
     }
     im << "\n";
   }
