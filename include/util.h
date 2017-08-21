@@ -25,6 +25,13 @@ Color3 interp(Color3 p_0, Color3 p_1, float x){
   return (1-x)*p_0 + x*p_1;
 }
 
+
+Color3 bi_interp(background bg, int i, int j, int n_col, int n_row){
+  Color3 top = interp(bg.upper_left, bg.upper_right, (float)j/n_col);
+  Color3 bottom = interp(bg.lower_left, bg.lower_right, (float)j/n_col);
+  return interp(top, bottom, (float)(i)/(float)n_row);
+}
+
 Color3 find_color(background bg,
                  std::pair <int,int> ij,
                  std::pair <float, float> dimension, //n_col, n_row (xy)
@@ -52,13 +59,12 @@ Color3 find_color(background bg,
     return (255*n);
   }
   //Didn't hit any object. Fill with background.
-  int i = ij.first;
-  int j = ij.second;
-  int n_col = dimension.first;
-  int n_row = dimension.second;
-  Color3 top = interp(bg.upper_left, bg.upper_right, (float)j/n_col);
-  Color3 bottom = interp(bg.lower_left, bg.lower_right, (float)j/n_col);
-  return interp(top, bottom, (float)(i)/(float)n_row);
+  //TODO: Let the user choose if the background is formed by the front screem or by the ray.
+  //Color3 color_background = bi_interp(bg, ij.first, ij.second, dimension.first, dimension.second);
+  Vec3 unit_direction = unit_vector(r_.get_direction());
+  float t_0 = (unit_direction.y() + 1) * 0.5; //normal gives a number between -1 and 1, an we want between 0 and 1
+  Color3 color_background = interp(bg.lower_left, bg.upper_left, t_0); //suppose upper_left = upper color and lower_left= lower color.
+  return color_background;
 }
 
 #endif
