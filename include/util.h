@@ -33,7 +33,7 @@ Color3 bi_interp(background bg, int i, int j, int n_col, int n_row){
 }
 
 Color3 find_color(background bg,
-                 std::pair <int,int> ij,
+                 std::pair <float,float> ij,
                  std::pair <float, float> dimension, //n_col, n_row (xy)
                  const Ray& r_,
                  std::vector <Object*> s_

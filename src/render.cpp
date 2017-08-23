@@ -77,7 +77,8 @@ int main (int argc, char* argv[]) {
   }
 
   Image image(properties[NAME], n_col, n_row);
-  Camera* c = new Camera();
+  Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
+  int nb_sample(80);
 
   std::vector<Object*> objects;
   objects.push_back(new Sphere((Point3(0,-100.5,-3)), 99.f));
@@ -85,12 +86,20 @@ int main (int argc, char* argv[]) {
   objects.push_back(new Sphere((Point3(0,1,-2)), 0.6));
   objects.push_back(new Sphere((Point3(-0.4,0,-3)), 0.7));
 
+  std::random_device rd;
+  std::mt19937 gen(rd());
+
   for(int i = 0; i < n_row; i++){
     for(int j = 0; j < n_col; j++){
-      float u = (float)j/(float)n_col;
-      float v = 1 - (float)(i)/(float)n_row;
-      Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-      image(i, j) = find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
+      Color3 col(0,0,0);
+      for(int k = 0; k < nb_sample; k++){
+        float u = (j+std::generate_canonical<double, 10>(gen))/ n_col;
+        float v =  1 - (i+std::generate_canonical<double, 10>(gen))/ n_row;
+        Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
+        col+= find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
+      }
+      col = col/nb_sample;
+      image(i, j) = col;
     }
   }
 
