@@ -6,13 +6,7 @@
 #include "vec3.h"
 #include "object.h" // hit
 #include <vector>
-
-struct background {
-  Color3 upper_left;
-  Color3 upper_right;
-  Color3 lower_left;
-  Color3 lower_right;
-};
+#include "scene.h"
 
 //https://stackoverflow.com/questions/16329358/remove-spaces-from-a-string-in-c
 std::string removeSpaces(std::string input)
@@ -32,16 +26,15 @@ Color3 bi_interp(background bg, int i, int j, int n_col, int n_row){
   return interp(top, bottom, (float)(i)/(float)n_row);
 }
 
-Color3 find_color(background bg,
+Color3 find_color(Scene scene,
                  std::pair <float,float> ij,
                  std::pair <float, float> dimension, //n_col, n_row (xy)
-                 const Ray& r_,
-                 std::vector <Object*> s_
-                 ){
+                 const Ray& r_
+               ){
   Hit t_prev, t;
   int check = -1;
   Vec3 n;
-  for (std::vector<Object*>::iterator it = s_.begin() ; it != s_.end(); it++){
+  for (std::vector<Object*>::iterator it = scene.getObjects()->begin() ; it != scene.getObjects()->end(); it++){
     if ((*it)->hit(r_, TMIN, TMAX, t_prev)){
       if (check == -1){
         t = t_prev; // initialize t_prev
@@ -63,7 +56,7 @@ Color3 find_color(background bg,
   //Color3 color_background = bi_interp(bg, ij.first, ij.second, dimension.first, dimension.second);
   Vec3 unit_direction = unit_vector(r_.get_direction());
   float t_0 = (unit_direction.y() + 1) * 0.5; //normal gives a number between -1 and 1, an we want between 0 and 1
-  Color3 color_background = interp(bg.lower_left, bg.upper_left, t_0); //suppose upper_left = upper color and lower_left= lower color.
+  Color3 color_background = interp(scene.bgLowerLeft(), scene.bgUpperLeft(), t_0); //suppose upper_left = upper color and lower_left= lower color.
   return color_background;
 }
 

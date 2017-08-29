@@ -16,7 +16,8 @@
 #include <vector>
 #include "image.h"
 #include <random>   //std::random_device rd; std::mt19937
-#include <iostream> //std::random_device rd; std::mt19937 
+#include <iostream> //std::random_device rd; std::mt19937
+#include "scene.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"

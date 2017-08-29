@@ -80,11 +80,11 @@ int main (int argc, char* argv[]) {
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
   int nb_sample(80);
 
-  std::vector<Object*> objects;
-  objects.push_back(new Sphere((Point3(0,-100.5,-3)), 99.f));
-  objects.push_back(new Sphere((Point3(0.3,0,-1)), 0.4));
-  objects.push_back(new Sphere((Point3(0,1,-2)), 0.6));
-  objects.push_back(new Sphere((Point3(-0.4,0,-3)), 0.7));
+  Scene scene(bg);
+  scene.addObject(new Sphere(Point3(0,-100.5,-3), 99.f));
+  scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4));
+  scene.addObject(new Sphere(Point3(0,1,-2), 0.6));
+  scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7));
 
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -96,7 +96,7 @@ int main (int argc, char* argv[]) {
         float u = (j+std::generate_canonical<double, 10>(gen))/ n_col;
         float v =  1 - (i+std::generate_canonical<double, 10>(gen))/ n_row;
         Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-        col+= find_color(bg, std::make_pair(i,j), std::make_pair(n_col,n_row), r, objects);
+        col+= find_color(scene, std::make_pair(i,j), std::make_pair(n_col,n_row), r);
       }
       col = col/nb_sample;
       image(i, j) = col;
