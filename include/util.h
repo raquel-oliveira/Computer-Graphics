@@ -7,6 +7,7 @@
 #include "object.h" // hit
 #include <vector>
 #include "scene.h"
+#include "background.h"
 
 //https://stackoverflow.com/questions/16329358/remove-spaces-from-a-string-in-c
 std::string removeSpaces(std::string input)
@@ -20,17 +21,13 @@ Color3 interp(Color3 p_0, Color3 p_1, float x){
 }
 
 
-Color3 bi_interp(background bg, int i, int j, int n_col, int n_row){
-  Color3 top = interp(bg.upper_left, bg.upper_right, (float)j/n_col);
-  Color3 bottom = interp(bg.lower_left, bg.lower_right, (float)j/n_col);
+Color3 bi_interp(Scene s, int i, int j, int n_col, int n_row){
+  Color3 top = interp(s.getBg()->upperLeft(), s.getBg()->upperRight(), (float)j/n_col);
+  Color3 bottom = interp(s.getBg()->lowerLeft(), s.getBg()->lowerRight(), (float)j/n_col);
   return interp(top, bottom, (float)(i)/(float)n_row);
 }
 
-Color3 find_color(Scene scene,
-                 std::pair <float,float> ij,
-                 std::pair <float, float> dimension, //n_col, n_row (xy)
-                 const Ray& r_
-               ){
+Color3 find_color(Scene scene,const Ray& r_){
   Hit t_prev, t;
   int check = -1;
   Vec3 n;
@@ -51,13 +48,8 @@ Color3 find_color(Scene scene,
   if (check == 0){
     return (255*n);
   }
-  //Didn't hit any object. Fill with background.
-  //TODO: Let the user choose if the background is formed by the front screem or by the ray.
-  //Color3 color_background = bi_interp(bg, ij.first, ij.second, dimension.first, dimension.second);
-  Vec3 unit_direction = unit_vector(r_.get_direction());
-  float t_0 = (unit_direction.y() + 1) * 0.5; //normal gives a number between -1 and 1, an we want between 0 and 1
-  Color3 color_background = interp(scene.bgLowerLeft(), scene.bgUpperLeft(), t_0); //suppose upper_left = upper color and lower_left= lower color.
-  return color_background;
+
+  return scene.getBg()->get(r_);
 }
 
 #endif
