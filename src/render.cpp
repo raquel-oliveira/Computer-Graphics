@@ -4,14 +4,14 @@ int main () {
   //Default properties
   std::map<std::string, std::string> properties = { {NAME, "background.ppm"},
                                                     {TYPE, "PPM"},
-                                                    {CODIFICATION,"ascii"},
+                                                    {CODIFICATION,"binary"},
                                                     {SIZE_HEIGHT, "600"},
                                                     {SIZE_WIDTH, "1200"},
                                                     {UPPER_LEFT, "127 178 255"},
                                                     {UPPER_RIGHT, "127 178 255"},
                                                     {LOWER_LEFT, "255 255 255"},
                                                     {LOWER_RIGHT, "255 255 255"},
-                                                    {SAMPLE, "80"}
+                                                    {SAMPLE, "200"}
                                                   };
 
   //Parse
