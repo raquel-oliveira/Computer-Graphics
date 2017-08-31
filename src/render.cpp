@@ -41,7 +41,8 @@ int main () {
   scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4));
   scene.addObject(new Sphere(Point3(0,1,-2), 0.6));
   scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7));
-  Shader* s = new Normal2RGB();
+  //Shader* s = new Normal2RGB();
+  Shader* s = new Depth();
 
   std::random_device rd;
   std::mt19937 gen(rd());
