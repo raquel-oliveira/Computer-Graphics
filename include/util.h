@@ -9,17 +9,9 @@
 #include "scene.h"
 #include "background.h"
 
-//https://stackoverflow.com/questions/16329358/remove-spaces-from-a-string-in-c
-std::string removeSpaces(std::string input)
-{
-  input.erase(std::remove(input.begin(),input.end(),' '),input.end());
-  return input;
-}
-
 Color3 interp(Color3 p_0, Color3 p_1, float x){
   return (1-x)*p_0 + x*p_1;
 }
-
 
 Color3 bi_interp(Scene s, int i, int j, int n_col, int n_row){
   Color3 top = interp(s.getBg()->upperLeft(), s.getBg()->upperRight(), (float)j/n_col);

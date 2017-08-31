@@ -28,6 +28,7 @@
 #define LOWER_LEFT "LOWER_LEFT"
 #define UPPER_RIGHT "UPPER_RIGHT"
 #define LOWER_RIGHT "LOWER_RIGHT"
+#define SAMPLE "SAMPLE"
 #define MAX 255
 #define NB_CHANNEL 3
 
