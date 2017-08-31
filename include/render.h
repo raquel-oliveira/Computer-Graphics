@@ -18,6 +18,7 @@
 #include <random>   //std::random_device rd; std::mt19937
 #include <iostream> //std::random_device rd; std::mt19937
 #include "scene.h"
+#include "shader.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"

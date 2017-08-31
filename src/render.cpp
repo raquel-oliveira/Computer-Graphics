@@ -41,6 +41,7 @@ int main () {
   scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4));
   scene.addObject(new Sphere(Point3(0,1,-2), 0.6));
   scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7));
+  Shader* s = new Normal2RGB();
 
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -52,7 +53,7 @@ int main () {
         float u = (j+std::generate_canonical<double, 10>(gen))/ n_col;
         float v =  1 - (i+std::generate_canonical<double, 10>(gen))/ n_row;
         Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-        col+= find_color(scene, r);
+        col+= s->find_color(scene, r);
       }
       col = col/nb_sample;
       image(i, j) = col;
