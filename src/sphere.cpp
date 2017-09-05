@@ -36,6 +36,7 @@ std::string Sphere::get_info(std::string tab){
   info << tab << "Sphere: \n";
   info << tab << "\t Center Point: " << center_ << "\n";
   info << tab << "\t Radius Point: " << radius_ << "\n";
+  info << material->get_info(tab+"\t") << "\n";
 
   return info.str();
 }

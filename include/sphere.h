@@ -5,26 +5,27 @@
 #include "ray.h"
 #include "object.h"
 #include <string>
+#include "material.h"
+#include <memory> //shared_ptr
 
 class Sphere : public Object {
   private:
       Point3 center_;
       float radius_;
-      Color3 color_;
 
   public:
       Sphere():
-        center_(0,0,0), radius_(0.5) , color_(255,0,0){}
+        center_(0,0,0)
+        ,radius_(0.5)
+        ,Object(std::shared_ptr<Material>(new Material(Color3(0,0,0),Color3(0,0,0),Color3(0,0,0),0))) {}
 
-      Sphere(Point3 p_0=Point3(), float r_0 = float())
+      Sphere(Point3 p_0, float r_0, std::shared_ptr<Material> m)
         : center_(p_0)
-        , radius_(r_0) {
-        color_ = Color3(255,0,0); //red
-      }
+        , radius_(r_0)
+        , Object(m){}
 
       inline Point3 center() const { return center_; }
       inline float radius() const { return radius_; }
-      inline Color3 color() const { return color_; }
 
       bool hit(const Ray &r_, float t_min, float t_max, Hit& hit) const;
 

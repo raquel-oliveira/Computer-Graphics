@@ -16,6 +16,7 @@
 #include <chrono>  // chrono::system_clock
 #include <ctime>   // localtime
 #include <iomanip> // put_time
+#include <memory> //shared_ptr
 
 #define NAME "NAME"
 #define TYPE "TYPE"
@@ -78,11 +79,12 @@ int main () {
 
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
   BackgroundSky bg(c_ul, c_ll);
+  std::shared_ptr<Material> nothing(new Material(Color3(0,0,0), Color3(0,0,0), Color3(0,0,0), 0));
   Scene scene(&bg);
-  scene.addObject(new Sphere(Point3(0,-100.5,-3), 99.f));
-  scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4));
-  scene.addObject(new Sphere(Point3(0,1,-2), 0.6));
-  scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7));
+  scene.addObject(new Sphere(Point3(0,-100.5,-3), 99.f, nothing));
+  scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4, nothing));
+  scene.addObject(new Sphere(Point3(0,1,-2), 0.6, nothing));
+  scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7, nothing));
   //Shader* s = new Normal2RGB();
   Shader* s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
 
