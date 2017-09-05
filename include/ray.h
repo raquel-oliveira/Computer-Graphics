@@ -3,8 +3,6 @@
 
 #include "vec3.h"
 
-using namespace utility;
-
 class Ray {
   private:
     Point3 O; //the origin of the Ray

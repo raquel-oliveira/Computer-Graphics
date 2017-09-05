@@ -5,8 +5,6 @@
 #include "ray.h"
 #include "object.h"
 
-using namespace utility;
-
 class Sphere : public Object {
   private:
       Point3 center_;

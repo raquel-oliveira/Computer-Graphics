@@ -1,5 +1,31 @@
-#include "../include/render.h"
+#include "../include/raytracer.h"
+#include <iostream>
+#include <string> // stoi (string to int)
+#include <map>
+#include <fstream>
+#include "../include/vec3.h"
+#include "../include/ray.h"
+#include "../include/sphere.h"
+#include <sstream>      // std::stringstream, std::stringbuf
+#include "../include/camera.h"
+#include "../include/object.h"
+#include <vector>
+#include "../include/image.h"
+#include "../include/scene.h"
+#include "../include/shader.h"
 
+#define NAME "NAME"
+#define TYPE "TYPE"
+#define CODIFICATION "CODIFICATION"
+#define SIZE_WIDTH "WIDTH"
+#define SIZE_HEIGHT "HEIGHT"
+#define UPPER_LEFT "UPPER_LEFT"
+#define LOWER_LEFT "LOWER_LEFT"
+#define UPPER_RIGHT "UPPER_RIGHT"
+#define LOWER_RIGHT "LOWER_RIGHT"
+#define SAMPLE "SAMPLE"
+#define MAX 255
+#define NB_CHANNEL 3
 int main () {
   //Default properties
   std::map<std::string, std::string> properties = { {NAME, "background.ppm"},
@@ -33,7 +59,6 @@ int main () {
     lr >> c_lr.e[i];
   }
 
-  Image image(properties[NAME], n_col, n_row);
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
   BackgroundSky bg(c_ul, c_ll);
   Scene scene(&bg);
@@ -42,24 +67,12 @@ int main () {
   scene.addObject(new Sphere(Point3(0,1,-2), 0.6));
   scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7));
   //Shader* s = new Normal2RGB();
-  Shader* s = new Depth();
+  Shader* s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
 
-  std::random_device rd;
-  std::mt19937 gen(rd());
 
-  for(int i = 0; i < n_row; i++){
-    for(int j = 0; j < n_col; j++){
-      Color3 col(0,0,0);
-      for(int k = 0; k < nb_sample; k++){
-        float u = (j+std::generate_canonical<double, 10>(gen))/ n_col;
-        float v =  1 - (i+std::generate_canonical<double, 10>(gen))/ n_row;
-        Ray r(c->origin(), c->llc()+(u*c->horizontal())+(v*c->vertical()));
-        col+= s->find_color(scene, r);
-      }
-      col = col/nb_sample;
-      image(i, j) = col;
-    }
-  }
+  /*********RAY TRACE************/
+  Raytracer r(c, scene, s, nb_sample );
+  Image image = r.render(properties[NAME], n_col, n_row);
 
   //TODO: Treat TYPE/CODIFICATION
   if (properties[CODIFICATION] == "binary"){

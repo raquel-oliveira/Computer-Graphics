@@ -1,7 +1,6 @@
 #ifndef _SHADER_H_
 #define _SHADER_H_
 
-Color3 interp(Color3 p_0, Color3 p_1, float x);
 
 class Shader {
 
@@ -11,9 +10,8 @@ class Shader {
     bool intersect( Scene scene, const Ray &r_, Hit &hr ) const{
       bool check = false;
       Hit hr_prev; //hitRecords
-      //for(const auto & i : scene.getObjects()){
-      for (std::vector<Object*>::iterator i = scene.getObjects()->begin() ; i != scene.getObjects()->end(); i++){
-        if ((*i)->hit(r_, TMIN, TMAX, hr_prev)){
+      for(const auto i : *scene.getObjects()){
+        if (i->hit(r_, TMIN, TMAX, hr_prev)){
           if (!check){ //First time hit
             hr = hr_prev;
           } else{
@@ -35,7 +33,7 @@ class Normal2RGB : public Shader{
     Color3 find_color(Scene scene,const Ray& r_) const{
       Hit hr;
       if(intersect(scene, r_, hr)){
-        Color3 n = Vec3((hr.normal.x()+1), (hr.normal.y()+1), (hr.normal.z()+1)) * 0.5; //normal gives a number between -1 and 1, an we want between 0 and 1 (+1/2)
+        Color3 n = ((hr.normal)+Vec3(1,1,1)) * 0.5; //normal gives a number between -1 and 1, an we want between 0 and 1 (+1/2)
         return (255*n);
       }
 

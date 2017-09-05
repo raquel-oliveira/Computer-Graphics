@@ -4,8 +4,6 @@
 #include "vec3.h"
 #include "util.h"
 
-Color3 interp(Color3 p_0, Color3 p_1, float x);
-
 class Background {
 protected:
     Color3 upper_left;
@@ -28,6 +26,8 @@ protected:
     virtual Color3 get(Ray r) const = 0;
 
 };
+
+Color3 interp(Color3 p_0, Color3 p_1, float x);
 
 class BackgroundSky : public Background{
   public:

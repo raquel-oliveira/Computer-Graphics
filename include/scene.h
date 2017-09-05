@@ -24,7 +24,6 @@ class Scene{
 
       inline Background* getBg(){ return bg;}
 
-      //TODO:: Change this
       inline std::vector<Object*>* getObjects() {return &objects;}
 
 
