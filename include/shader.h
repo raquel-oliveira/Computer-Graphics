@@ -1,11 +1,13 @@
 #ifndef _SHADER_H_
 #define _SHADER_H_
-
+#include <sstream>      // std::ostringstream
 
 class Shader {
 
   public:
     virtual Color3 find_color(Scene scene,const Ray& r_) const = 0;
+
+    virtual std::string get_info(std::string tab) = 0;
 
     bool intersect( Scene scene, const Ray &r_, Hit &hr ) const{
       bool check = false;
@@ -39,6 +41,13 @@ class Normal2RGB : public Shader{
 
       return scene.getBg()->get(r_);
     }
+
+    std::string get_info(std::string tab) {
+      std::string info = "";
+      info += tab + "Shader Normal to RGB\n";
+      return info;
+    }
+
 };
 
 class Depth : public Shader{
@@ -72,6 +81,17 @@ class Depth : public Shader{
       }
 
       return 255*background_depth;
+    }
+
+    std::string get_info(std::string tab) {
+      std::ostringstream info;
+      info << tab << "Depth shader\n";
+      info << tab <<"\tDepth min:" << depth_min << "\n";
+      info << tab <<"\tDepth max:" << depth_max << "\n";
+      info << tab <<"\tBackground color:" << background_depth << "\n";
+      info << tab <<"\tForeground color:" << foreground_depth << "\n";
+
+      return info.str();
     }
 };
 

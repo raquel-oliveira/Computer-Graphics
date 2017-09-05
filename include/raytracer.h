@@ -14,6 +14,8 @@ class Raytracer {
     Shader* shader;
     int nb_samples;
 
+    void get_description(std::string name);
+
   public:
     Raytracer(Camera* c, Scene s, Shader* sh, int i) :
       camera(c), scene(s), shader(sh) {

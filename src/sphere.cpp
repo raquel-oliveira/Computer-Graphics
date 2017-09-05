@@ -1,4 +1,5 @@
 #include "../include/sphere.h"
+#include <sstream>      // std::ostringstream
 
 bool Sphere::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
   auto dir = r_.get_direction();
@@ -28,4 +29,13 @@ bool Sphere::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
     }
     return false; // can not see in this perspective
   }
+}
+
+std::string Sphere::get_info(std::string tab){
+  std::ostringstream info;
+  info << tab << "Sphere: \n";
+  info << tab << "\t Center Point: " << center_ << "\n";
+  info << tab << "\t Radius Point: " << radius_ << "\n";
+
+  return info.str();
 }

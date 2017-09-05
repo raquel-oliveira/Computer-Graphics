@@ -3,9 +3,25 @@
 #include <random>   //std::random_device rd; std::mt19937
 #include <iostream> //std::random_device rd; std::mt19937
 
+void Raytracer::get_description(std::string name){
+  std::ofstream description_file (name+".txt", std::fstream::out | std::ios::trunc);
+  if (!description_file){}
+  else{
+    //description_file << name << "\n";
+    description_file << camera->get_info("");
+    description_file << "Number of samples(antialiasing) :" << nb_samples << "\n";
+    description_file << "Scene : \n" << scene.get_info("\t") << "\n";
+    description_file << shader->get_info("") << "\n";
+
+
+  }
+}
+
+
 Image Raytracer::render (std::string name, int n_col, int n_row){
   std::random_device rd;
   std::mt19937 gen(rd());
+  get_description(name);
   Image image(name, n_col, n_row);
 
   for(int i = 0; i < n_row; i++){

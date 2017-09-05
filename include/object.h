@@ -12,6 +12,8 @@ struct Hit {
 class Object {
   public :
     virtual bool hit(const Ray &ray, float t_min, float t_max, Hit& hit) const = 0;
+
+    virtual std::string get_info(std::string tab) = 0;
 };
 
 #endif

@@ -2,6 +2,8 @@
 #define _CAMERA_H_
 
 #include "vec3.h"
+#include <string>
+#include <sstream>      // std::ostringstream
 
 class Camera{
   private:
@@ -30,6 +32,17 @@ class Camera{
     inline Vec3 horizontal() const { return horizontal_axis; }
     inline Point3 origin() const { return origin_point; }
 
+    inline std::string get_info(std::string tab){
+      std::ostringstream info;
+
+      info << tab <<"Camera: \n";
+      info << tab <<"\t Lower left corner :" << lower_left_corner << "\n";
+      info << tab <<"\t Vertical axis :" << vertical_axis << "\n";
+      info << tab <<"\t Horizontal axis :" << horizontal_axis << "\n";
+      info << tab <<"\t Origin point :" << origin_point << "\n";
+
+      return info.str();
+    }
 
 };
 

@@ -13,6 +13,9 @@
 #include "../include/image.h"
 #include "../include/scene.h"
 #include "../include/shader.h"
+#include <chrono>  // chrono::system_clock
+#include <ctime>   // localtime
+#include <iomanip> // put_time
 
 #define NAME "NAME"
 #define TYPE "TYPE"
@@ -26,6 +29,18 @@
 #define SAMPLE "SAMPLE"
 #define MAX 255
 #define NB_CHANNEL 3
+
+//Source: https://stackoverflow.com/questions/17223096/outputting-date-and-time-in-c-using-stdchrono
+std::string return_current_time_and_date(){
+    auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+    std::stringstream ss;
+    ss << "../output/";
+    ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
+    return ss.str();
+}
+
 int main () {
   //Default properties
   std::map<std::string, std::string> properties = { {NAME, "background.ppm"},
@@ -59,6 +74,8 @@ int main () {
     lr >> c_lr.e[i];
   }
 
+  std::string time_file = return_current_time_and_date();
+
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
   BackgroundSky bg(c_ul, c_ll);
   Scene scene(&bg);
@@ -70,9 +87,10 @@ int main () {
   Shader* s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
 
 
+
   /*********RAY TRACE************/
   Raytracer r(c, scene, s, nb_sample );
-  Image image = r.render(properties[NAME], n_col, n_row);
+  Image image = r.render(time_file, n_col, n_row);
 
   //TODO: Treat TYPE/CODIFICATION
   if (properties[CODIFICATION] == "binary"){
