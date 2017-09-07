@@ -17,6 +17,7 @@
 #include <ctime>   // localtime
 #include <iomanip> // put_time
 #include <memory> //shared_ptr
+#include "../include/light.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"
@@ -53,7 +54,7 @@ int main () {
                                                     {UPPER_RIGHT, "127 178 255"},
                                                     {LOWER_LEFT, "255 255 255"},
                                                     {LOWER_RIGHT, "255 255 255"},
-                                                    {SAMPLE, "200"}
+                                                    {SAMPLE, "1"}
                                                   };
 
   //Parse
@@ -85,6 +86,8 @@ int main () {
   scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4, nothing));
   scene.addObject(new Sphere(Point3(0,1,-2), 0.6, nothing));
   scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7, nothing));
+  scene.addLight(new DistantLight(Color3(1,1,1), Vec3(20,10,5)));
+
   //Shader* s = new Normal2RGB();
   Shader* s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
 

@@ -5,6 +5,7 @@
 #include "background.h"
 #include <vector>
 #include <sstream>      // std::ostringstream
+#include "light.h"
 
 
 class Scene{
@@ -12,6 +13,7 @@ class Scene{
     private:
       std::vector<Object*> objects;
       Background* bg;
+      std::vector<Light*> lights;
 
     public:
       Scene() :
@@ -24,9 +26,15 @@ class Scene{
         objects.push_back(o);
       }
 
+      void addLight(Light* t){
+        lights.push_back(t);
+      }
+
       inline Background* getBg(){ return bg;}
 
       inline std::vector<Object*>* getObjects() {return &objects;}
+
+      inline std::vector<Light*> getLights() {return lights;}
 
       inline std::string get_info(std::string tab) {
         std::ostringstream info;
@@ -37,6 +45,9 @@ class Scene{
         info << tab << "\tColor lowerRight :" << bg->lowerRight() << "\n";
         info << tab << "Objects :\n";
         for(const auto i : objects){
+          info << i->get_info(tab+"\t");
+        }
+        for(const auto i : lights){
           info << i->get_info(tab+"\t");
         }
         return info.str();
