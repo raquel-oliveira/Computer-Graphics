@@ -18,6 +18,7 @@ bool Sphere::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
       hit.t = t;
       hit.point = r_.point_at(hit.t);
       hit.normal = (hit.point - center_) / radius_;
+      hit.material = this->material;
       return true;
     }
     t = (-b + sqrt(delta))/(2*a);
@@ -25,6 +26,7 @@ bool Sphere::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
       hit.t = t;
       hit.point = r_.point_at(hit.t);
       hit.normal = (hit.point - center_) / radius_;
+      hit.material = this->material;
       return true;
     }
     return false; // can not see in this perspective

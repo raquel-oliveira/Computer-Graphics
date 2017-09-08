@@ -9,6 +9,7 @@ struct Hit {
     float t;
     Point3 point;
     Vec3 normal;
+    std::shared_ptr<Material> material;
 };
 
 class Object {

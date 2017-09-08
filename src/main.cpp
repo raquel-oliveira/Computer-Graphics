@@ -80,16 +80,23 @@ int main () {
 
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
   BackgroundSky bg(c_ul, c_ll);
+  //Material
   std::shared_ptr<Material> nothing(new Material(Color3(0,0,0), Color3(0,0,0), Color3(0,0,0), 0));
+  std::shared_ptr<Material> MaterialS1(new Material(Color3(0.1,0.1,0.1), Color3(0.4,0.4,0.4), Color3(1,1,1), 5));
+  std::shared_ptr<Material> MaterialS2(new Material(Color3(0.1,0.1,0.1), Color3(0,0.3,0.8), Color3(0.9,0.9,0.9), 64));
+  //SCENE
   Scene scene(&bg);
-  scene.addObject(new Sphere(Point3(0,-100.5,-3), 99.f, nothing));
-  scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4, nothing));
-  scene.addObject(new Sphere(Point3(0,1,-2), 0.6, nothing));
-  scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7, nothing));
+  scene.addObject(new Sphere(Point3(0,-100.5,-1), 99.f, MaterialS1));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2));
+  //scene.addObject(new Sphere(Point3(0.3,0,-1), 0.4, nothing));
+  //scene.addObject(new Sphere(Point3(0,1,-2), 0.6, nothing));
+  //scene.addObject(new Sphere(Point3(-0.4,0,-3), 0.7, nothing));
   scene.addLight(new DistantLight(Color3(1,1,1), Vec3(20,10,5)));
 
-  //Shader* s = new Normal2RGB();
-  Shader* s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
+  Shader* s;
+  //s = new Normal2RGB();
+  //s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
+  s = new LambertianShader();
 
 
 

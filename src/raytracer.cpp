@@ -31,10 +31,14 @@ Image Raytracer::render (std::string name, int n_col, int n_row){
         float u = (j+std::generate_canonical<double, 10>(gen))/ n_col;
         float v =  1 - (i+std::generate_canonical<double, 10>(gen))/ n_row;
         Ray r(camera->origin(), camera->llc()+(u*camera->horizontal())+(v*camera->vertical()));
-        col+= shader->find_color(scene, r);
+        col+= shader->find_color(scene, r);;
       }
       col = col/nb_samples;
-      image(i, j) = col;
+      auto x = (col.r() > 255) ? 255 : col.r();
+      auto y = (col.g() > 255) ? 255 : col.g();
+      auto z = (col.b() > 255) ? 255 : col.b();
+      Color3 d(x,y,z);
+      image(i, j) = d;
     }
   }
   return image;

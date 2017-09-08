@@ -1,6 +1,10 @@
 #ifndef _SHADER_H_
 #define _SHADER_H_
 #include <sstream>      // std::ostringstream
+#include "vec3.h"
+#include "scene.h"
+#include "ray.h"
+
 
 class Shader {
 
@@ -25,7 +29,7 @@ class Shader {
         }
       }
     return check;
-    }
+  }
 };
 
 class Normal2RGB : public Shader{
@@ -95,4 +99,12 @@ class Depth : public Shader{
     }
 };
 
+class LambertianShader : public Shader {
+  public:
+    LambertianShader(){}
+
+    Color3 find_color(Scene scene, const Ray& r_) const;
+
+    std::string get_info(std::string tab);
+};
 #endif
