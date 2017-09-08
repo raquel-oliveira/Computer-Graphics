@@ -1,9 +1,10 @@
 #include "../include/image.h"
+#define EXTENSION "ppm"
 
 void Image::create_by_binary(){
   int n_col(width_size);
   int n_row(height_size);
-  std::ofstream im (name, std::fstream::out | std::ios::trunc | std::ios::binary);
+  std::ofstream im (name+EXTENSION, std::fstream::out | std::ios::trunc | std::ios::binary);
 
   if(!im){
     std::cerr << "vixe, problem with " << name << std::endl;
@@ -21,7 +22,7 @@ void Image::create_by_binary(){
 void Image::create_by_ascii(){
   int n_col(width_size);
   int n_row(height_size);
-  std::ofstream im (name, std::fstream::out | std::ios::trunc );
+  std::ofstream im (name+EXTENSION, std::fstream::out | std::ios::trunc );
 
   if(!im){
     std::cerr << "vixe, problem with " << name << std::endl;
