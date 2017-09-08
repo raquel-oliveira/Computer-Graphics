@@ -1,5 +1,5 @@
 #include "../include/image.h"
-#define EXTENSION "ppm"
+#define EXTENSION ".ppm"
 
 void Image::create_by_binary(){
   int n_col(width_size);

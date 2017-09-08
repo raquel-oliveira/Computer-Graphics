@@ -17,11 +17,9 @@ void Raytracer::get_description(std::string name){
   }
 }
 
-
 Image Raytracer::render (std::string name, int n_col, int n_row){
   std::random_device rd;
   std::mt19937 gen(rd());
-  get_description(name);
   Image image(name, n_col, n_row);
 
   for(int i = 0; i < n_row; i++){
@@ -41,5 +39,6 @@ Image Raytracer::render (std::string name, int n_col, int n_row){
       image(i, j) = d;
     }
   }
+  get_description(name);
   return image;
 }
