@@ -54,7 +54,7 @@ int main () {
                                                     {UPPER_RIGHT, "127 178 255"},
                                                     {LOWER_LEFT, "255 255 255"},
                                                     {LOWER_RIGHT, "255 255 255"},
-                                                    {SAMPLE, "1"}
+                                                    {SAMPLE, "200"}
                                                   };
 
   //Parse
@@ -96,7 +96,8 @@ int main () {
   Shader* s;
   //s = new Normal2RGB();
   //s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
-  s = new LambertianShader();
+  //s = new LambertianShader();
+  s = new BlinnPhongShader();
 
 
 

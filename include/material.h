@@ -18,7 +18,7 @@ class Material {
     inline Color3 ks(){return k_s;}
     inline Color3 kd(){return k_d;}
     inline Color3 ka(){return k_a;}
-    inline Color3 get_alpha(){return alpha;}
+    inline float get_alpha(){return alpha;}
 
     inline std::string get_info(std::string tab){
       std::ostringstream info;

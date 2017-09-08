@@ -107,4 +107,13 @@ class LambertianShader : public Shader {
 
     std::string get_info(std::string tab);
 };
+
+class BlinnPhongShader : public Shader {
+  public:
+    BlinnPhongShader(){}
+
+    Color3 find_color(Scene scene, const Ray& r_) const;
+
+    std::string get_info(std::string tab);
+};
 #endif
