@@ -19,8 +19,18 @@ class Light{
 
     virtual std::string get_info(std::string tab) = 0;
 
-    virtual Vec3 get_l() = 0;
+    virtual Vec3 get_l(Point3 hit) = 0;
 
+};
+
+class AmbientLight : public Light{
+  public:
+    AmbientLight(Color3 i):
+      Light(i){}
+
+    std::string get_info(std::string tab);
+
+    inline Vec3 get_l(Point3 hit);
 };
 
 class DistantLight : public Light {
@@ -36,7 +46,7 @@ class DistantLight : public Light {
 
     std::string get_info(std::string tab);
 
-    inline Vec3 get_l() {return -1*direction;}
+    inline Vec3 get_l(Point3 hit) {return direction;}
 
 };
 
@@ -54,7 +64,7 @@ class PontualLight : public Light {
     std::string get_info(std::string tab);
 
     inline Vec3 get_l(Point3 hit){
-      return hit-origin;
+      return -1*(hit-origin);
     }
 
 };

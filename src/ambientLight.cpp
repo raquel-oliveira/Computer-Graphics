@@ -1,12 +1,15 @@
 #include "../include/light.h"
 #include <sstream>      // std::ostringstream
 
-std::string DistantLight::get_info(std::string tab){
+Vec3 AmbientLight::get_l(Point3 hit){
+  return intensity;
+}
+
+std::string AmbientLight::get_info(std::string tab){
   std::ostringstream info;
 
-  info << tab <<"Distant Light: \n";
+  info << tab <<"Ambient Light: \n";
   info << tab <<"\t Intensity :" << intensity << "\n";
-  info << tab <<"\t Direction :" << direction << "\n";
 
   return info.str();
 }

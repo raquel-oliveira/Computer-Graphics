@@ -1,12 +1,12 @@
 #include "../include/light.h"
 #include <sstream>      // std::ostringstream
 
-std::string DistantLight::get_info(std::string tab){
+std::string PontualLight::get_info(std::string tab){
   std::ostringstream info;
 
-  info << tab <<"Distant Light: \n";
+  info << tab <<"Pontual Light: \n";
   info << tab <<"\t Intensity :" << intensity << "\n";
-  info << tab <<"\t Direction :" << direction << "\n";
+  info << tab <<"\t Origin :" << origin << "\n";
 
   return info.str();
 }

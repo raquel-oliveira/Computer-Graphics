@@ -14,13 +14,16 @@ class Scene{
       std::vector<Object*> objects;
       Background* bg;
       std::vector<Light*> lights;
+      AmbientLight* ambient;
 
     public:
       Scene() :
-        bg(new BackgroundSky(Color3(0,0,0), Color3(0,0,0))){
-      }
+        bg(new BackgroundSky(Color3(0,0,0), Color3(0,0,0))),
+        ambient(new AmbientLight(Color3(0.4,0.4,0.4))){}
 
-      Scene(Background* bg) : bg(bg) {}
+      Scene(Background* bg) : bg(bg), ambient(new AmbientLight(Color3(0.4,0.4,0.4))) {}
+
+      Scene(Background* bg, AmbientLight* al) : bg(bg), ambient(al) {}
 
       void addObject(Object* o){
         objects.push_back(o);
@@ -35,6 +38,10 @@ class Scene{
       inline std::vector<Object*>* getObjects() {return &objects;}
 
       inline std::vector<Light*> getLights() {return lights;}
+
+      inline AmbientLight* getAmbientLight() {return ambient;}
+
+      inline void setAmbientLight(AmbientLight* al){ambient = al;}
 
       inline std::string get_info(std::string tab) {
         std::ostringstream info;
