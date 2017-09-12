@@ -14,15 +14,15 @@ class Sphere : public Object {
       float radius_;
 
   public:
-      Sphere():
-        center_(0,0,0)
-        ,radius_(0.5)
-        ,Object(std::shared_ptr<Material>(new Material(Color3(0,0,0),Color3(0,0,0),Color3(0,0,0),0))) {}
+      Sphere()
+        : Object(std::shared_ptr<Material>(new Material(Color3(0,0,0),Color3(0,0,0),Color3(0,0,0),0)))
+        , center_(0,0,0)
+        , radius_(0.5){}
 
       Sphere(Point3 p_0, float r_0, std::shared_ptr<Material> m)
-        : center_(p_0)
-        , radius_(r_0)
-        , Object(m){}
+        : Object(m)
+        , center_(p_0)
+        , radius_(r_0){}
 
       inline Point3 center() const { return center_; }
       inline float radius() const { return radius_; }
