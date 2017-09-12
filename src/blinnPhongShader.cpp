@@ -13,7 +13,7 @@ Color3 BlinnPhongShader::find_color(Scene scene, const Ray& r_) const{
     Color3 ambientR = hr.material->ka();
     for(const auto &l : scene.getLights()){
       Vec3 lvalue = l->get_l(hr.point);  lvalue.make_unit_vector();
-      Vec3 v = r_.get_origin() - hr.point;
+      Vec3 v = r_.get_origin() - hr.point; v.make_unit_vector();
       Vec3 hvalue = v + lvalue; hvalue.make_unit_vector();
       cosNL = dot(hr.normal,lvalue);
       cosNH = dot(hr.normal, hvalue);
@@ -23,7 +23,7 @@ Color3 BlinnPhongShader::find_color(Scene scene, const Ray& r_) const{
       color += specularR * l->get_intensity() * pow(maxNH, hr.material->get_alpha());
     }
     color+= ambientR * scene.getAmbientLight()->get_intensity();
-    return 255*color;
+    return color;
   }
   return scene.getBg()->get(r_);
 }

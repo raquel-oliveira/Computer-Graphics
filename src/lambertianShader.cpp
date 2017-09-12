@@ -17,7 +17,7 @@ Color3 LambertianShader::find_color(Scene scene, const Ray& r_) const{
       color += incidentLight * l->get_intensity() * max;
     }
     color+=scene.getAmbientLight()->get_intensity();
-    return 255*color;
+    return color;
   }
   return scene.getBg()->get(r_);
 }

@@ -50,10 +50,10 @@ int main () {
                                                     {CODIFICATION,"binary"},
                                                     {SIZE_HEIGHT, "600"},
                                                     {SIZE_WIDTH, "1200"},
-                                                    {UPPER_LEFT, "127 178 255"},
-                                                    {UPPER_RIGHT, "127 178 255"},
-                                                    {LOWER_LEFT, "255 255 255"},
-                                                    {LOWER_RIGHT, "255 255 255"},
+                                                    {UPPER_LEFT, "0.5 0.7 1"},
+                                                    {UPPER_RIGHT, "0.5 0.7 1"},
+                                                    {LOWER_LEFT, "1 1 1"},
+                                                    {LOWER_RIGHT, "1 1 1"},
                                                     {SAMPLE, "200"}
                                                   };
 
@@ -82,8 +82,8 @@ int main () {
   BackgroundSky bg(c_ul, c_ll);
   //Material
   std::shared_ptr<Material> nothing(new Material(Color3(0,0,0), Color3(0,0,0), Color3(0,0,0), 0));
-  std::shared_ptr<Material> MaterialS1(new Material(Color3(0.1,0.1,0.1), Color3(0.4,0.4,0.4), Color3(1,1,1), 5));
-  std::shared_ptr<Material> MaterialS2(new Material(Color3(0.1,0.1,0.1), Color3(0,0.3,0.8), Color3(0.9,0.9,0.9), 64));
+  std::shared_ptr<Material> MaterialS1(new Material(Color3(1,1,1), Color3(0.4,0.4,0.4), Color3(0.1,0.1,0.1), 5));
+  std::shared_ptr<Material> MaterialS2(new Material(Color3(0.9,0.9,0.9), Color3(0,0.3,0.8), Color3(0.1,0.1,0.1), 64));
   //SCENE
   Scene scene(&bg);
   scene.addObject(new Sphere(Point3(0,-100.5,-1), 99.f, MaterialS1));

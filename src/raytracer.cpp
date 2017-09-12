@@ -32,11 +32,11 @@ Image Raytracer::render (std::string name, int n_col, int n_row){
         col+= shader->find_color(scene, r);;
       }
       col = col/nb_samples;
-      auto x = (col.r() > 255) ? 255 : col.r();
-      auto y = (col.g() > 255) ? 255 : col.g();
-      auto z = (col.b() > 255) ? 255 : col.b();
-      Color3 d(x,y,z);
-      image(i, j) = d;
+      auto r = std::min(1.0f, col.r());
+      auto g = std::min(1.0f, col.g());
+      auto b = std::min(1.0f, col.b());
+      Color3 d(std::sqrt(r), std::sqrt(g), std::sqrt(b));
+      image(i, j) = 255*d;
     }
   }
   get_description(name);
