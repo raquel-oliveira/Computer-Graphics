@@ -7,7 +7,6 @@
 #include <sstream>      // std::ostringstream
 #include "light.h"
 
-
 class Scene{
 
     private:
@@ -21,7 +20,7 @@ class Scene{
         bg(new BackgroundSky(Color3(0,0,0), Color3(0,0,0))),
         ambient(new AmbientLight(Color3(0.4,0.4,0.4))){}
 
-      Scene(Background* bg) : bg(bg), ambient(new AmbientLight(Color3(0.4,0.4,0.4))) {}
+      Scene(Background* bg) : bg(bg), ambient(new AmbientLight(Color3(0,0,0))) {}
 
       Scene(Background* bg, AmbientLight* al) : bg(bg), ambient(al) {}
 
@@ -41,7 +40,7 @@ class Scene{
 
       inline AmbientLight* getAmbientLight() {return ambient;}
 
-      inline void setAmbientLight(AmbientLight* al){ambient = al;}
+      inline void setAmbientLight(AmbientLight* al){this->ambient = al;}
 
       inline std::string get_info(std::string tab) {
         std::ostringstream info;

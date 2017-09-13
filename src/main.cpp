@@ -117,10 +117,10 @@ int main () {
   s = new BlinnPhongShader();
   // no Light
   Scene scene(&bg);
-  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, nothing));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.4, nothing));
+  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS1));
   Raytracer r(c, scene, s, nb_sample );
-  Image img_0 = r.render("img_0"+time_file, n_col, n_row);
+  Image img_0 = r.render("img_0 "+time_file, n_col, n_row);
 
   // Ambient Light
   scene.setAmbientLight(new AmbientLight(intensidade2));
@@ -140,6 +140,9 @@ int main () {
   // especular only
   Scene scene_esp(&bg);
   scene_esp.addLight(l);
+  //TO LET BE LIKE TEACHER OUTPUT:
+    //scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_dif));
+  //To match description of the output file:
   scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_esp));
   scene_esp.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_64_esp));
   r = Raytracer(c, scene_esp, s, nb_sample);
