@@ -83,12 +83,18 @@ int main () {
   Color3 ambiente1(0.1,0.1,0.1);
   Color3 difuso1(0.4,0.4,0.4);
   Color3 difuso2(0.0,0.3,0.8);
+  Color3 difuso3(0.7,0.2,0.1);
+  Color3 difuso4(0.8,0.8,0.8);
   Color3 specular1(1,1,1);
   Color3 specular2(0.9,0.9,0.9);
   //Luzes
   Color3 intensidade1(1,1,1);
   Color3 intensidade2(0.4,0.4,0.4);
-  Vec3 direction(20,10,5);
+  Color3 intensidade3(0.5,0.5,0.5);
+  Color3 intensidade4(0.8,0.8,0.8);
+  Vec3 direction(20,10,15);
+  Vec3 direction2(-8,7,0);
+
 
 
   //Material
@@ -102,6 +108,9 @@ int main () {
   std::shared_ptr<Material> MaterialS2_64(new Material(specular2, difuso2, ambiente1, 64));
   std::shared_ptr<Material> MaterialS2_64_esp(new Material(specular2, neutro, ambiente1, 64));
   std::shared_ptr<Material> MaterialS2_64_dif(new Material(neutro, difuso2, ambiente1, 64));
+  std::shared_ptr<Material> Material_extra(new Material(specular1, difuso3, ambiente1, 64));
+  std::shared_ptr<Material> Material_extra2(new Material(neutro, difuso4, ambiente1, 64));
+
 
   //Shader
   Shader* s;
@@ -113,113 +122,18 @@ int main () {
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
 
  //Diffuse Shader
-  s = new DiffuseShader();
+  s = new BlinnPhongShader();
   Scene scene(&bg);
-  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS1));
+  scene.setAmbientLight(new AmbientLight(intensidade2));
+  scene.addLight(new DistantLight(intensidade3, direction));
+  scene.addLight(new DistantLight(intensidade4, direction2));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
+  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, Material_extra2));
   Raytracer r(c, scene, s, nb_sample );
   Image img = r.render("img "+time_file, n_col, n_row);
   if (properties[CODIFICATION] == "binary"){ img.create_by_binary(); }
   else if (properties[CODIFICATION] == "ascii") { img.create_by_ascii();}
   else{std::cerr << "Codification not accepted (yet)" << std::endl;}
-  
-  /*====================== Exercise 4 -- blinn phong
-  s = new BlinnPhongShader();
-  // no Light
-  Scene scene(&bg);
-  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS1));
-  Raytracer r(c, scene, s, nb_sample );
-  Image img_0 = r.render("img_0 "+time_file, n_col, n_row);
-
-  // Ambient Light
-  scene.setAmbientLight(new AmbientLight(intensidade2));
-  r = Raytracer(c, scene, s, nb_sample);
-  Image img_1 = r.render("img_1 "+time_file, n_col, n_row);
-
-  DistantLight* l = new DistantLight(Color3(1,1,1), Vec3(20,10,5));
-
-  // difuso only
-  Scene scene_dif(&bg);
-  scene_dif.addLight(l);
-  scene_dif.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_dif));
-  scene_dif.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_64_dif));
-  r = Raytracer(c, scene_dif, s, nb_sample);
-  Image img_2 = r.render("img_2 "+time_file, n_col, n_row);
-
-  // especular only
-  Scene scene_esp(&bg);
-  scene_esp.addLight(l);
-  //TO LET BE LIKE TEACHER OUTPUT:
-  scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_dif));
-  //To match description of the output file:
-  //scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_esp));
-  scene_esp.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_64_esp));
-  r = Raytracer(c, scene_esp, s, nb_sample);
-  Image img_3 = r.render("img_3 "+time_file, n_col, n_row);
 
 
-  Sphere* sheree = new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1);
-
-  // especular, difuso
-  Scene scene2(&bg);
-  scene2.addLight(l);
-  scene2.addObject(sheree);
-  scene2.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_64));
-  r = Raytracer(c, scene2, s, nb_sample);
-  Image img_4 = r.render("img_4 "+time_file, n_col, n_row);
-  //with ambient
-  scene2.setAmbientLight(new AmbientLight(intensidade2));
-  r = Raytracer(c, scene2, s, nb_sample);
-  Image img_8 = r.render("img_8 "+time_file, n_col, n_row);
-
-  // especular, difuso, 4
-  Scene scene4(&bg);
-  scene4.addLight(l);
-  scene4.addObject(sheree);
-  scene4.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_4));
-  r = Raytracer(c, scene4, s, nb_sample);
-  Image img_7 = r.render("img_7 "+time_file, n_col, n_row);
-
-  // especular, difuso, 16
-  Scene scene16(&bg);
-  scene16.addLight(l);
-  scene16.addObject(sheree);
-  scene16.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_16));
-  r = Raytracer(c, scene16, s, nb_sample);
-  Image img_6 = r.render("img_6 "+time_file, n_col, n_row);
-
-  // especular, difuso, 32
-  Scene scene32(&bg);
-  scene32.addLight(l);
-  scene32.addObject(sheree);
-  scene32.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_32));
-   Raytracer rr(c, scene32, s, nb_sample);
-  Image img_5 = rr.render("img_5 "+time_file, n_col, n_row);
-
-  //TODO: Treat TYPE/CODIFICATION
-  if (properties[CODIFICATION] == "binary"){
-    img_0.create_by_binary();
-    img_1.create_by_binary();
-    img_2.create_by_binary();
-    img_3.create_by_binary();
-    img_4.create_by_binary();
-    img_5.create_by_binary();
-    img_6.create_by_binary();
-    img_7.create_by_binary();
-    img_8.create_by_binary();
-  }
-  else if (properties[CODIFICATION] == "ascii") {
-    img_0.create_by_ascii();
-    img_1.create_by_ascii();
-    img_2.create_by_ascii();
-    img_3.create_by_ascii();
-    img_4.create_by_ascii();
-    img_5.create_by_ascii();
-    img_6.create_by_ascii();
-    img_7.create_by_ascii();
-    img_8.create_by_ascii();
-  } else{
-    std::cerr << "Codification not accepted (yet)" << std::endl;
-  }*/
 }

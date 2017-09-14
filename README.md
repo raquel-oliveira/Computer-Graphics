@@ -13,6 +13,4 @@ Run `make`
 
 ### Run
 
-Run `cd build`
-
 Run `./render`
