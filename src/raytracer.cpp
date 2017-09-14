@@ -1,5 +1,5 @@
-#include "../include/raytracer.h"
-#include "../include/ray.h"
+#include "raytracer.h"
+#include "ray.h"
 #include <random>   //std::random_device rd; std::mt19937
 #include <iostream> //std::random_device rd; std::mt19937
 
@@ -39,6 +39,6 @@ Image Raytracer::render (std::string name, int n_col, int n_row){
       image(i, j) = 255*d;
     }
   }
-  get_description(name);
+  get_description(PATH+name);
   return image;
 }

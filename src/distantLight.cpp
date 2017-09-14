@@ -1,4 +1,4 @@
-#include "../include/light.h"
+#include "light.h"
 #include <sstream>      // std::ostringstream
 
 Vec3 DistantLight::get_l(Point3 hit){

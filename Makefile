@@ -1,86 +1,110 @@
-# Note:
-# Copied from: https://gist.github.com/maurizzzio/de8908f67923091982c8c8136a063ea6
-# Generic Makefile example for a C++ project
+# Makefile
 #
-CXX ?= g++
+# Makefile completo separando os diferentes elementos da aplicacao
+# como codigo (src), cabecalhos (include), executaveis (build),
+# bibliotecas (lib), etc. Cada elemento e alocado em uma pasta
+# especifica, organizando melhor o codigo fonte.
+#
+# Algumas variaveis sao usadas com significado especial:
+#
+# $@ nome do alvo (target)
+# $^ lista com os nomes de todos os pre-requisitos sem duplicatas
+# $< nome do primeiro pre-requisito
+#
 
-# path #
-SRC_PATH = src
-BUILD_PATH = build
-BIN_PATH = $(BUILD_PATH)
+# Comandos do sistema operacional
+# Linux: rm -rf
+# Windows: cmd //C del
+RM = rm -rf
 
-# executable #
-BIN_NAME = render
+# Compilador
+CC=g++
 
-# extensions #
-SRC_EXT = cpp
+# Variaveis para os subdiretorios
+INC_DIR=include
+SRC_DIR=src
+OBJ_DIR=build
+#BIN_DIR=bin
+DOC_DIR=doc
 
-# code lists #
-# Find all source files in the source directory, sorted by
-# most recently modified
-SOURCES = $(shell find $(SRC_PATH) -name '*.$(SRC_EXT)' | sort -k 1nr | cut -f2-)
-# Set the object file names, with the source directory stripped
-# from the path, and the build path prepended in its place
-OBJECTS = $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
-# Set the dependency files that will be used to add header dependencies
-DEPS = $(OBJECTS:.o=.d)
+# Opcoes de compilacao
+CFLAGS=-Wall -pedantic -std=c++11 -I. -I$(INC_DIR)
 
-# flags #
-OPTIMIZE = -O03
-#DEBUG = -g -D
-DEBUG = -g
-COMPILE_FLAGS = -std=c++11 -Wall -Wextra
-INCLUDES = -I include/
-#INCLUDES = -I include/ -I /usr/local/include
-# Space-separated pkg-config libraries used by this project
-LIBS =
+# Garante que os alvos desta lista nao sejam confundidos com arquivos
+# de mesmo nome
+.PHONY: all init clean debug doxy doc
 
-.PHONY: default_target
-default_target: release
+# Define o alvo (target) para a compilacao completa e os alvos
+# de dependencia. Ao final da compilacao, remove os arquivos objeto.
+all: init render
 
-.PHONY: debug
-debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(DEBUG)
-debug: dirs
-	@$(MAKE) all
+debug: CFLAGS += -g -O0
+debug: all
+
+# Alvo (target) para a criação da estrutura de diretorios
+# necessaria para a geracao dos arquivos objeto
+init:
+	@mkdir -p $(BIN_DIR)/
+	@mkdir -p $(OBJ_DIR)/
+
+# Alvo (target) para a construcao do executavel create1
+# Define o arquivo build/render.o como dependencia
+render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o
+	$(CC) $(CFLAGS) -o render $^
+	@echo "Executavel ./render criado\n"
+
+# Define o arquivo src/main.cpp como dependencia
+$(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp $(INC_DIR)/raytracer.h $(INC_DIR)/vec3.h $(INC_DIR)/ray.h $(INC_DIR)/sphere.h $(INC_DIR)/camera.h $(INC_DIR)/object.h $(INC_DIR)/image.h $(INC_DIR)/scene.h $(INC_DIR)/shader.h $(INC_DIR)/light.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/util.cpp como dependencia
+$(OBJ_DIR)/util.o: $(SRC_DIR)/util.cpp $(INC_DIR)/util.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/image.cpp como dependencia
+$(OBJ_DIR)/image.o: $(SRC_DIR)/image.cpp $(INC_DIR)/image.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/raytrace.cpp como dependencia
+$(OBJ_DIR)/raytracer.o: $(SRC_DIR)/raytracer.cpp $(INC_DIR)/ray.h $(INC_DIR)/raytracer.h
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 
-.PHONY: release
-release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(OPTIMIZE)
-release: dirs
-	@$(MAKE) all
+##### SHADERS
+# Define o arquivo src/blinnPhongShader.cpp como dependencia
+$(OBJ_DIR)/blinnPhongShader.o: $(SRC_DIR)/blinnPhongShader.cpp $(INC_DIR)/shader.h $(INC_DIR)/vec3.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/lambertianShader.cpp como dependencia
+$(OBJ_DIR)/lambertianShader.o: $(SRC_DIR)/lambertianShader.cpp $(INC_DIR)/shader.h $(INC_DIR)/vec3.h
+	$(CC) -c $(CFLAGS) -o $@ $<
 
-.PHONY: dirs
-dirs:
-	@echo "Creating directories"
-	@mkdir -p $(dir $(OBJECTS))
-	@mkdir -p $(BIN_PATH)
 
-.PHONY: clean
+#### LIGHTS
+# Define o arquivo src/ambientLight.cpp como dependencia
+$(OBJ_DIR)/ambientLight.o: $(SRC_DIR)/ambientLight.cpp $(INC_DIR)/light.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/distantLight.cpp como dependencia
+$(OBJ_DIR)/distantLight.o: $(SRC_DIR)/distantLight.cpp $(INC_DIR)/light.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/pontualLight.cpp como dependencia
+$(OBJ_DIR)/pontualLight.o: $(SRC_DIR)/pontualLight.cpp $(INC_DIR)/light.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+#### Material
+# Define o arquivo src/sphere.cpp como dependencia
+$(OBJ_DIR)/sphere.o: $(SRC_DIR)/sphere.cpp $(INC_DIR)/sphere.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+# Alvo (target) para a geração automatica de documentacao
+# usando o Doxygen. Sempre remove a documentacao anterior (caso exista)
+# e gera uma nova.
+doxy:
+	doxygen -g
+
+doc:
+	$(RM) $(DOC_DIR)/*;mkdir -p $(DOC_DIR)/
+	doxygen
+
+# Alvo (target) usado para limpar os arquivos temporarios (objeto)
+# gerados durante a compilacao, assim como os arquivos
+# binarios/executaveis.
 clean:
-	@echo "Deleting $(BIN_NAME) symlink"
-	@$(RM) $(BIN_NAME)
-	@echo "Deleting directories"
-	@$(RM) -r $(BUILD_PATH)
-	@$(RM) -r $(BIN_PATH)
-
-# checks the executable and symlinks to the output
-.PHONY: all
-all: $(BIN_PATH)/$(BIN_NAME)
-	@echo "Making symlink: $(BIN_NAME) -> $<"
-	@$(RM) $(BIN_NAME)
-	@ln -s $(BIN_PATH)/$(BIN_NAME) $(BIN_NAME)
-
-# Creation of the executable
-$(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
-	@echo "Linking: $@"
-	$(CXX) $(OBJECTS) -o $@
-
-# Add dependency files, if they exist
--include $(DEPS)
-
-# Source file rules
-# After the first compilation they will be joined with the rules from the
-# dependency files to provide header dependencies
-$(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
-	@echo "Compiling: $< -> $@"
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	#$(RM) $(BIN_DIR)/*
+	$(RM) $(OBJ_DIR)/*

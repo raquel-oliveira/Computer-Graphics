@@ -28,9 +28,9 @@ class AmbientLight : public Light{
     AmbientLight(Color3 i):
       Light(i){}
 
-    std::string get_info(std::string tab) override;
+    std::string get_info(std::string tab);
 
-    inline Vec3 get_l(Point3 hit) override;
+    inline Vec3 get_l(Point3 hit);
 };
 
 class DistantLight : public Light {
@@ -44,9 +44,9 @@ class DistantLight : public Light {
 
     inline Vec3 get_direction() {return direction;}
 
-    std::string get_info(std::string tab) override;
+    std::string get_info(std::string tab);
 
-    inline Vec3 get_l(Point3 hit) override;
+    inline Vec3 get_l(Point3 hit);
 
 };
 
@@ -61,9 +61,9 @@ class PontualLight : public Light {
 
     inline Point3 get_origin() {return origin;}
 
-    std::string get_info(std::string tab) override;
+    std::string get_info(std::string tab);
 
-    inline Vec3 get_l(Point3 hit) override;
+    inline Vec3 get_l(Point3 hit);
 
 };
 #endif

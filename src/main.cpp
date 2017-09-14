@@ -1,23 +1,23 @@
-#include "../include/raytracer.h"
+#include "raytracer.h"
 #include <iostream>
 #include <string> // stoi (string to int)
 #include <map>
 #include <fstream>
-#include "../include/vec3.h"
-#include "../include/ray.h"
-#include "../include/sphere.h"
+#include "vec3.h"
+#include "ray.h"
+#include "sphere.h"
 #include <sstream>      // std::stringstream, std::stringbuf
-#include "../include/camera.h"
-#include "../include/object.h"
+#include "camera.h"
+#include "object.h"
 #include <vector>
-#include "../include/image.h"
-#include "../include/scene.h"
-#include "../include/shader.h"
+#include "image.h"
+#include "scene.h"
+#include "shader.h"
 #include <chrono>  // chrono::system_clock
 #include <ctime>   // localtime
 #include <iomanip> // put_time
 #include <memory> //shared_ptr
-#include "../include/light.h"
+#include "light.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"
@@ -141,9 +141,9 @@ int main () {
   Scene scene_esp(&bg);
   scene_esp.addLight(l);
   //TO LET BE LIKE TEACHER OUTPUT:
-    //scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_dif));
+  scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_dif));
   //To match description of the output file:
-  scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_esp));
+  //scene_esp.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1_esp));
   scene_esp.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS2_64_esp));
   r = Raytracer(c, scene_esp, s, nb_sample);
   Image img_3 = r.render("img_3 "+time_file, n_col, n_row);

@@ -8,6 +8,7 @@
 #define MAX 255
 #define NB_CHANNEL 3
 #define NAME_IMAGE "background"
+#define PATH "output/"
 
 class Image {
   private:

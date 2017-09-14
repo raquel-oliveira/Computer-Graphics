@@ -1,4 +1,4 @@
-#include "../include/sphere.h"
+#include "sphere.h"
 #include <sstream>      // std::ostringstream
 
 bool Sphere::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{

@@ -1,5 +1,5 @@
-#include "../include/shader.h"
-#include "../include/vec3.h"
+#include "shader.h"
+#include "vec3.h"
 #include <sstream>      // std::ostringstream
 #include <math.h>       /* pow */
 
