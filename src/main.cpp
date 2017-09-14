@@ -112,8 +112,18 @@ int main () {
   //Camera
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
 
-
-  //======================= Exercise 4 -- blinn phong
+ //Diffuse Shader
+  s = new DiffuseShader();
+  Scene scene(&bg);
+  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, MaterialS1));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.4, MaterialS1));
+  Raytracer r(c, scene, s, nb_sample );
+  Image img = r.render("img "+time_file, n_col, n_row);
+  if (properties[CODIFICATION] == "binary"){ img.create_by_binary(); }
+  else if (properties[CODIFICATION] == "ascii") { img.create_by_ascii();}
+  else{std::cerr << "Codification not accepted (yet)" << std::endl;}
+  
+  /*====================== Exercise 4 -- blinn phong
   s = new BlinnPhongShader();
   // no Light
   Scene scene(&bg);
@@ -211,5 +221,5 @@ int main () {
     img_8.create_by_ascii();
   } else{
     std::cerr << "Codification not accepted (yet)" << std::endl;
-  }
+  }*/
 }

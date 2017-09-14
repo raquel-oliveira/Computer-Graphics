@@ -49,7 +49,7 @@ init:
 
 # Alvo (target) para a construcao do executavel create1
 # Define o arquivo build/render.o como dependencia
-render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o
+render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o
 	$(CC) $(CFLAGS) -o render $^
 	@echo "Executavel ./render criado\n"
 
@@ -73,6 +73,9 @@ $(OBJ_DIR)/blinnPhongShader.o: $(SRC_DIR)/blinnPhongShader.cpp $(INC_DIR)/shader
 	$(CC) -c $(CFLAGS) -o $@ $<
 # Define o arquivo src/lambertianShader.cpp como dependencia
 $(OBJ_DIR)/lambertianShader.o: $(SRC_DIR)/lambertianShader.cpp $(INC_DIR)/shader.h $(INC_DIR)/vec3.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/DiffuseShader.cpp como dependencia
+$(OBJ_DIR)/DiffuseShader.o: $(SRC_DIR)/DiffuseShader.cpp $(INC_DIR)/shader.h $(INC_DIR)/util.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 

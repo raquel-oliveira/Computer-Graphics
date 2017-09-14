@@ -2,6 +2,15 @@
 
 using namespace utility;
 
+//https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxbd00/rdrnd4.htm
+Point3 random_point_sphere(){
+  Point3 p;
+  do {
+    p = 2.0*Point3(drand48(), drand48(), drand48()) - Vec3(1,1,1);
+  } while(dot(p,p)>=1.0);
+  return p;
+}
+
 Color3 interp(Color3 p_0, Color3 p_1, float x){
   return (1-x)*p_0 + x*p_1;
 }

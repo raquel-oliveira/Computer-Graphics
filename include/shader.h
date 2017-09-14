@@ -116,4 +116,13 @@ class BlinnPhongShader : public Shader {
 
     std::string get_info(std::string tab);
 };
+
+class DiffuseShader : public Shader {
+  public:
+    DiffuseShader(){}
+
+    Color3 find_color(Scene scene, const Ray& r_) const;
+
+    std::string get_info(std::string tab);
+};
 #endif
