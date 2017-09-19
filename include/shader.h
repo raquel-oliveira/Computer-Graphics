@@ -125,4 +125,19 @@ class DiffuseShader : public Shader {
 
     std::string get_info(std::string tab);
 };
+
+class RecursiveShader : public Shader {
+  private:
+    int depth;
+
+  public:
+    RecursiveShader(int d) : depth(d) {}
+
+    Color3 find_color(Scene scene, const Ray& r_) const;
+
+    Color3 find_color2(Scene scene, const Ray& r_, int dp) const ;
+
+    std::string get_info(std::string tab);
+};
+
 #endif

@@ -16,4 +16,7 @@ Color3 bi_interp(Background* bg, int i, int j, int n_col, int n_row);
 
 Point3 random_point_sphere();
 
+//perfect reflection 
+Vec3 reflect(const Vec3& v, const Vec3& n);
+
 #endif

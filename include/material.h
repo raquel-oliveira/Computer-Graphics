@@ -2,10 +2,11 @@
 #define _MATERIAL_H_
 #include "vec3.h"
 #include <sstream>      // std::ostringstream
+#include "object.h"
 
 class Material {
 
-  private:
+  protected:
     Color3 k_s; // specular reflection
     Color3 k_d; // difuse reflection
     Color3 k_a; // ambient reflection
@@ -20,7 +21,9 @@ class Material {
     inline Color3 ka(){return k_a;}
     inline float get_alpha(){return alpha;}
 
-    inline std::string get_info(std::string tab){
+    inline virtual bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const { return false;}
+
+    inline virtual std::string get_info(std::string tab){
       std::ostringstream info;
       info << tab << "Material : \n";
       info << tab << "\t Specular reflection(k_s)" << k_s << "\n";
@@ -30,6 +33,17 @@ class Material {
 
       return info.str();
     }
+};
+
+class LambertianMaterial : public Material {
+
+  public:
+    LambertianMaterial(Color3 a)
+     : Material(Color3(0,0,0), a, Color3(0,0,0), 0) {}
+
+    bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const;
+
+    inline std::string get_info(std::string tab);
 };
 
 #endif

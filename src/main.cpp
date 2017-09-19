@@ -85,6 +85,8 @@ int main () {
   Color3 difuso2(0.0,0.3,0.8);
   Color3 difuso3(0.7,0.2,0.1);
   Color3 difuso4(0.8,0.8,0.8);
+  Color3 lb_col(0.8,0.3,0.3);
+  Color3 lb_col2(0.8,0.8,0.0);
   Color3 specular1(1,1,1);
   Color3 specular2(0.9,0.9,0.9);
   //Luzes
@@ -110,7 +112,8 @@ int main () {
   std::shared_ptr<Material> MaterialS2_64_dif(new Material(neutro, difuso2, ambiente1, 64));
   std::shared_ptr<Material> Material_extra(new Material(specular1, difuso3, ambiente1, 64));
   std::shared_ptr<Material> Material_extra2(new Material(neutro, difuso4, ambiente1, 64));
-
+  std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col));
+  std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2));
 
   //Shader
   Shader* s;
@@ -122,13 +125,15 @@ int main () {
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
 
  //Diffuse Shader
-  s = new BlinnPhongShader();
+  s = new RecursiveShader(5);
   Scene scene(&bg);
   scene.setAmbientLight(new AmbientLight(intensidade2));
   scene.addLight(new DistantLight(intensidade3, direction));
   scene.addLight(new DistantLight(intensidade4, direction2));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
-  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, Material_extra2));
+  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
+  //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, Material_extra2));
+  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, lb2));
   Raytracer r(c, scene, s, nb_sample );
   Image img = r.render("img "+time_file, n_col, n_row);
   if (properties[CODIFICATION] == "binary"){ img.create_by_binary(); }

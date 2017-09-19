@@ -20,3 +20,7 @@ Color3 bi_interp(Background* bg, int i, int j, int n_col, int n_row){
   Color3 bottom = interp(bg->lowerLeft(), bg->lowerRight(), (float)j/n_col);
   return interp(top, bottom, (float)(i)/(float)n_row);
 }
+
+Vec3 reflect(const Vec3& v, const Vec3& n){
+  return v - 2*dot(v,n)*n;
+}

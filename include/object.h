@@ -5,6 +5,8 @@
 #include "material.h"
 #include <memory> //shared_ptr
 
+class Material;
+
 struct Hit {
     float t;
     Point3 point;
