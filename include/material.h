@@ -46,4 +46,15 @@ class LambertianMaterial : public Material {
     inline std::string get_info(std::string tab);
 };
 
+class MetalMaterial : public Material {
+
+  public:
+    MetalMaterial(Color3 a)
+     : Material(Color3(0,0,0), a, Color3(0,0,0), 0) {}
+
+    bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const;
+
+    inline std::string get_info(std::string tab);
+};
+
 #endif
