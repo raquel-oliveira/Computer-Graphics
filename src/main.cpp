@@ -118,9 +118,6 @@ int main () {
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
 
-
-
-
   //Shader
   Shader* s;
   //s = new Normal2RGB();
@@ -131,7 +128,8 @@ int main () {
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
 
  //Diffuse Shader
-  s = new RecursiveShader(5);
+  //s = new RecursiveShader(5);
+  s = new ToonShader();
   Scene scene(&bg);
   scene.setAmbientLight(new AmbientLight(intensidade2));
   scene.addLight(new DistantLight(intensidade3, direction));

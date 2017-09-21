@@ -49,7 +49,7 @@ init:
 
 # Alvo (target) para a construcao do executavel create1
 # Define o arquivo build/render.o como dependencia
-render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o
+render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o $(OBJ_DIR)/ToonShader.o
 	$(CC) $(CFLAGS) -o render $^
 	@echo "Executavel ./render criado\n"
 
@@ -80,6 +80,9 @@ $(OBJ_DIR)/DiffuseShader.o: $(SRC_DIR)/DiffuseShader.cpp $(INC_DIR)/shader.h $(I
 # Define o arquivo src/RecursiveShader.cpp como dependencia
 $(OBJ_DIR)/RecursiveShader.o: $(SRC_DIR)/RecursiveShader.cpp $(INC_DIR)/shader.h
 	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/ToonShader.cpp como dependencia
+$(OBJ_DIR)/ToonShader.o: $(SRC_DIR)/ToonShader.cpp $(INC_DIR)/shader.h
+	$(CC) -c $(CFLAGS) -o $@ $<
 
 
 #### LIGHTS
@@ -105,6 +108,7 @@ $(OBJ_DIR)/LambertianMaterial.o: $(SRC_DIR)/LambertianMaterial.cpp $(INC_DIR)/ma
 # Define o arquivo src/MetalMaterial.cpp como dependencia
 $(OBJ_DIR)/MetalMaterial.o: $(SRC_DIR)/MetalMaterial.cpp $(INC_DIR)/material.h $(INC_DIR)/util.h  $(INC_DIR)/object.h $(INC_DIR)/vec3.h
 	$(CC) -c $(CFLAGS) -o $@ $<
+
 # Alvo (target) para a geração automatica de documentacao
 # usando o Doxygen. Sempre remove a documentacao anterior (caso exista)
 # e gera uma nova.
