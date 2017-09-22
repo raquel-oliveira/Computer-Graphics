@@ -3,6 +3,7 @@
 #include "vec3.h"
 #include <sstream>      // std::ostringstream
 #include "object.h"
+#include <vector>
 
 class Material {
 
@@ -57,4 +58,30 @@ class MetalMaterial : public Material {
     inline std::string get_info(std::string tab);
 };
 
+class ToonMaterial : public Material {
+  public:
+    std::vector<Color3> colors;
+    std::vector<float>intervals;
+    Color3 lineBorder;
+    Color3 shadow;
+
+    //TODO: create more constructors to allow flexibility for user
+    ToonMaterial(std::vector<Color3> c)
+     : Material(Color3(0,0,0), Color3(0,0,0), Color3(0,0,0), 0)
+     , colors(c)
+     , lineBorder(Color3(0,0,0)) //black
+     , shadow(Color3(0.1,0.1,0.1)) //grey
+     {
+       float dif = 1.f/(colors.size()+1);
+       intervals.push_back(0);
+       for(int i = 0; i < colors.size()-1; i++){
+         intervals.push_back(intervals.back()+dif);
+       }
+       intervals.push_back(1.f);
+     }
+
+    bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const;
+
+    inline std::string get_info(std::string tab);
+};
 #endif

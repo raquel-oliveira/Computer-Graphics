@@ -118,28 +118,34 @@ int main () {
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
 
+  std::vector<Color3> colors; //red gradient
+  colors.push_back(Color3(0.25,0,0));
+  colors.push_back(Color3(0.5,0,0));
+  colors.push_back(Color3(0.75,0,0));
+  colors.push_back(Color3(1,0,0));
+  std::shared_ptr<Material> toon1(new ToonMaterial(colors));
+
   //Shader
   Shader* s;
   //s = new Normal2RGB();
   //s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
   //s = new LambertianShader();
+  //s = new RecursiveShader(5);
+  s = new ToonShader();
 
   //Camera
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
 
- //Diffuse Shader
-  //s = new RecursiveShader(5);
-  s = new ToonShader();
   Scene scene(&bg);
   scene.setAmbientLight(new AmbientLight(intensidade2));
   scene.addLight(new DistantLight(intensidade3, direction));
-  scene.addLight(new DistantLight(intensidade4, direction2));
+  //scene.addLight(new DistantLight(intensidade4, direction2));
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, toon1));
   //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, Material_extra2));
-  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, lb2));
-  scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
-  scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, met2));
+  //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, toon1));
+  //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
+  //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, met2));
 
   Raytracer r(c, scene, s, nb_sample );
   Image img = r.render("img "+time_file, n_col, n_row);
