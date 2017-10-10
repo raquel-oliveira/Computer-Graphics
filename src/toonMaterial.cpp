@@ -15,13 +15,9 @@ std::string ToonMaterial::get_info(std::string tab){
   info << tab << "\t Shadow color: " << shadow << "\n";
   info << tab << "\t Border line color: " << lineBorder << "\n";
 
-  info << tab << "\t Colors:\n";
-  for (auto &c : colors){
-    info << tab << "\t\t " << c << "\n";
-  }
-  info << tab << "\tIntervals:\n";
-  for (auto &i : intervals){
-    info << tab << "\t\t " << i << "\n";
+  info << tab << "Intensity-> color:\n";
+  for(int i = 1; i < intervals.size(); i++){
+    info << tab << "\t\t From " << intervals[i-1] << " to " << intervals[i] << " : " << colors[i-1] << "\n";
   }
   return info.str();
 }

@@ -7,31 +7,39 @@ Color3 ToonShader::find_color(Scene scene, const Ray& r_) const{
   float intensity = 0;
   if(intersect(scene, r_, hr)){
     auto t = std::dynamic_pointer_cast<ToonMaterial>(hr.material);
-    /*Makes sense ambientecolor in this shader?
-    Color3 ambientR = hr.material->ka();
-    Color3 color = ambientR * scene.getAmbientLight()->get_intensity();*/
+    if (t == NULL){std::cerr << "Not a Toon material";}
     Color3 color(0,0,0);
+    Vec3 eye = r_.get_direction(); eye.make_unit_vector();
+    float checkBorder = dot(eye, hr.normal);
+    if (checkBorder < 0.2 && checkBorder > -0.2) { return t->lineBorder;} //TODO: allow user to set the edge thickness?
+
     for(const auto &l : scene.getLights()){
-      Vec3 eye = r_.get_direction(); eye.make_unit_vector();
-      float checkBorder = dot(eye, hr.normal);
-      if (checkBorder < 0.2 && checkBorder > -0.2) { return t->lineBorder;} //TODO: allow user to set the edge thickness?
       Vec3 lvalue = l->get_l(hr.point); lvalue.make_unit_vector();
-      intensity = dot(lvalue, hr.normal); //TODO: update to multiple lights, so chose the min/max
       Ray p(hr.point+0.01*hr.normal, lvalue);
-       if(!(intersect(scene, p, srec))){
-        if (t == NULL){std::cerr << "Not a Toon material";}
-        for(int i = 1; i < t->intervals.size(); i++){
-          if (intensity < t->intervals[i]){
-            return t->colors[i-1];
-            //color+= t->colors[i-1];break;
-          } //TODO: see case of 0 and 1(intensity). else if (intensity == 1 ) color == t->colors[t->colors.size()+1];
-        }
+      float intensityl = dot(lvalue, hr.normal);
+      intensityl = (intensityl+1)*0.5;
+
+      //TODO: Check shadow inconsistence
+      /*
+      if(intersect(scene, p, srec)){ //Shadow
+        continue;
       } else {
-        //TODO: order of lights, to doesn't color with shadow if another light colored
-        return t->shadow;
+        //intensity = std::max(intensityl, intensity);
+        intensity += intensityl;
+      }*/
+      //Without shadow:
+      intensity = std::max(intensityl, intensity);
+    }
+
+    for(int i = 1; i < t->intervals.size(); i++){
+      if(intensity < 0.01f){
+        return Color3(0,0,0); //return t->shadow;
+      }
+      if (intensity <= t->intervals[i]){
+        return t->colors[i-1];
       }
     }
-    return color;
+    return Color3(1,1,0); //Should never get here. But let's keep it there for debug
   }
   return scene.getBg()->get(r_);
 }

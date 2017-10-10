@@ -1,4 +1,4 @@
-#include "raytracer.h"
+ #include "raytracer.h"
 #include <iostream>
 #include <string> // stoi (string to int)
 #include <map>
@@ -95,10 +95,10 @@ int main () {
   Color3 intensidade2(0.4,0.4,0.4);
   Color3 intensidade3(0.5,0.5,0.5);
   Color3 intensidade4(0.8,0.8,0.8);
+  Color3 intensidade5(0.2,0.2,0.2);
   Vec3 direction(20,10,15);
   Vec3 direction2(-8,7,0);
-
-
+  Vec3 direction3(-3,20,0);
 
   //Material
   std::shared_ptr<Material> nothing(new Material(neutro,neutro,neutro, 0));
@@ -119,11 +119,36 @@ int main () {
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
 
   std::vector<Color3> colors; //red gradient
+  colors.push_back(Color3(0.10,0,0));
   colors.push_back(Color3(0.25,0,0));
   colors.push_back(Color3(0.5,0,0));
   colors.push_back(Color3(0.75,0,0));
   colors.push_back(Color3(1,0,0));
   std::shared_ptr<Material> toon1(new ToonMaterial(colors));
+
+  std::vector<Color3> colors2; //green gradient
+  colors2.push_back(Color3(0,0.10,0));
+  colors2.push_back(Color3(0,0.25,0));
+  colors2.push_back(Color3(0,0.5,0));
+  colors2.push_back(Color3(0,0.75,0));
+  colors2.push_back(Color3(0,1,0));
+  std::shared_ptr<Material> toon2(new ToonMaterial(colors2));
+
+  std::vector<Color3> colors3; //blue gradient
+  colors3.push_back(Color3(0,0, 0.10));
+  colors3.push_back(Color3(0,0, 0.25));
+  colors3.push_back(Color3(0,0, 0.5));
+  colors3.push_back(Color3(0,0, 0.75));
+  colors3.push_back(Color3(0,0,1));
+  std::shared_ptr<Material> toon3(new ToonMaterial(colors3));
+
+  std::vector<Color3> colors4; //yellow gradient
+  colors4.push_back(Color3(0.1,0.1, 0));
+  colors4.push_back(Color3(0.25,0.25, 0));
+  colors4.push_back(Color3(0.5,0.5,0));
+  colors4.push_back(Color3(0.75,0.75,0));
+  colors4.push_back(Color3(1,1,0));
+  std::shared_ptr<Material> toon4(new ToonMaterial(colors4));
 
   //Shader
   Shader* s;
@@ -138,12 +163,17 @@ int main () {
 
   Scene scene(&bg);
   scene.setAmbientLight(new AmbientLight(intensidade2));
-  scene.addLight(new DistantLight(intensidade3, direction));
-  //scene.addLight(new DistantLight(intensidade4, direction2));
+  scene.addLight(new DistantLight(intensidade4, direction2));
+  //scene.addLight(new DistantLight(intensidade3, direction));
+  scene.addLight(new DistantLight(intensidade5, direction3));
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, toon1));
+  scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo
+  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, toon1)); //big one
+
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, toon2)); //center
+  scene.addObject(new Sphere(Point3(1,0,-1), 0.5, toon4)); //lado direto
+
   //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, Material_extra2));
-  //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, toon1));
   //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
   //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, met2));
 
