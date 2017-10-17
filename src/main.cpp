@@ -99,6 +99,8 @@ int main () {
   Vec3 direction(20,10,15);
   Vec3 direction2(-8,7,0);
   Vec3 direction3(-3,20,0);
+  Vec3 direction4(0.5,0,-0.6);
+
 
   //Material
   std::shared_ptr<Material> nothing(new Material(neutro,neutro,neutro, 0));
@@ -156,26 +158,29 @@ int main () {
   //s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
   //s = new LambertianShader();
   //s = new RecursiveShader(5);
-  s = new ToonShader();
+  //s = new ToonShader();
+  s = new BlinnPhongShader();
 
   //Camera
   Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
 
   Scene scene(&bg);
-  scene.setAmbientLight(new AmbientLight(intensidade2));
-  scene.addLight(new DistantLight(intensidade4, direction2));
-  //scene.addLight(new DistantLight(intensidade3, direction));
-  scene.addLight(new DistantLight(intensidade5, direction3));
-  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
-  scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo
-  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, toon1)); //big one
+  //scene.setAmbientLight(new AmbientLight(intensidade2));
+  //scene.addLight(new DistantLight(intensidade4, direction2));
+  scene.addLight(new PontualLight(intensidade3, direction4));
+  //scene.addLight(new DistantLight(intensidade5, direction3));
+  //scene.addLight(new DistantLight(intensidade5, direction3));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
+  //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo
+  //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, toon1)); //big one
 
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, toon2)); //center
-  scene.addObject(new Sphere(Point3(1,0,-1), 0.5, toon4)); //lado direto
+  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, toon2)); //center
+  //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, toon4)); //lado direto
 
   //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, Material_extra2));
-  //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
-  //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, met2));
+    scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
+    scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, met2));
+    //scene.addObject(new Sphere(direction4, 0.1, MaterialS1));
 
   Raytracer r(c, scene, s, nb_sample );
   Image img = r.render("img "+time_file, n_col, n_row);

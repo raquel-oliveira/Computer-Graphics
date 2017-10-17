@@ -49,7 +49,7 @@ init:
 
 # Alvo (target) para a construcao do executavel create1
 # Define o arquivo build/render.o como dependencia
-render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o $(OBJ_DIR)/ToonShader.o $(OBJ_DIR)/ToonMaterial.o
+render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o $(OBJ_DIR)/ToonShader.o $(OBJ_DIR)/ToonMaterial.o $(OBJ_DIR)/pontualLight.o
 	$(CC) $(CFLAGS) -o render $^
 	@echo "Executavel ./render criado\n"
 
