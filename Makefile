@@ -54,7 +54,7 @@ render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnP
 	@echo "Executavel ./render criado\n"
 
 # Define o arquivo src/main.cpp como dependencia
-$(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp $(INC_DIR)/raytracer.h $(INC_DIR)/vec3.h $(INC_DIR)/ray.h $(INC_DIR)/sphere.h $(INC_DIR)/camera.h $(INC_DIR)/object.h $(INC_DIR)/image.h $(INC_DIR)/scene.h $(INC_DIR)/shader.h $(INC_DIR)/light.h
+$(OBJ_DIR)/main.o: $(SRC_DIR)/main.cpp $(INC_DIR)/raytracer.h $(INC_DIR)/vec3.h $(INC_DIR)/matrix.h $(INC_DIR)/ray.h $(INC_DIR)/sphere.h $(INC_DIR)/camera.h $(INC_DIR)/object.h $(INC_DIR)/image.h $(INC_DIR)/scene.h $(INC_DIR)/shader.h $(INC_DIR)/light.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 # Define o arquivo src/util.cpp como dependencia
 $(OBJ_DIR)/util.o: $(SRC_DIR)/util.cpp $(INC_DIR)/util.h

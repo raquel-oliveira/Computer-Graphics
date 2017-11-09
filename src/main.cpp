@@ -18,6 +18,7 @@
 #include <iomanip> // put_time
 #include <memory> //shared_ptr
 #include "light.h"
+#include "matrix.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"
