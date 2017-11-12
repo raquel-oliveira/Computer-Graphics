@@ -9,34 +9,35 @@
  * Represents a 3D vector, that might be used to represent
  * points, directions, vectors, colors, offset
  */
+
 namespace utility {
+template<typename TField>
 class Vec3
 {
     public:
         //=== Aliases
-        typedef float value_type;
         enum field_t : int { X=0, Y=1, Z=2, R=0, G=1, B=2 };
 
         //=== Members
-        value_type e[ 3 ];
+        TField e[ 3 ];
 
         //=== Special members
-        Vec3( value_type e0_=0.f, value_type e1_=0.f, value_type e2_=0.f )
+        Vec3( TField e0_=0.f, TField e1_=0.f, TField e2_=0.f )
             : e{ e0_, e1_, e2_ }
         { /* empty */ }
 
         //=== Access operators
-        inline value_type x() const { return e[X]; }
-        inline value_type y() const { return e[Y]; }
-        inline value_type z() const { return e[Z]; }
-        inline value_type r() const { return e[R]; }
-        inline value_type g() const { return e[G]; }
-        inline value_type b() const { return e[B]; }
+        inline TField x() const { return e[X]; }
+        inline TField y() const { return e[Y]; }
+        inline TField z() const { return e[Z]; }
+        inline TField r() const { return e[R]; }
+        inline TField g() const { return e[G]; }
+        inline TField b() const { return e[B]; }
 
         // indexed access operator (rhs)
-        inline value_type operator[]( size_t idx ) const { return e[ idx ]; }
+        inline TField operator[]( size_t idx ) const { return e[ idx ]; }
         // indexed access operator (lhs)
-        inline value_type& operator[]( size_t idx ) { return e[ idx ]; }
+        inline TField& operator[]( size_t idx ) { return e[ idx ]; }
 
         //=== Algebraic operators
 
@@ -49,23 +50,23 @@ class Vec3
         inline Vec3& operator-=( const Vec3& );
         inline Vec3& operator*=( const Vec3& );
         inline Vec3& operator/=( const Vec3& );
-        inline Vec3& operator*=( const value_type );
-        inline Vec3& operator/=( const value_type );
+        inline Vec3& operator*=( const TField );
+        inline Vec3& operator/=( const TField );
 
-        inline value_type length( void ) const
+        inline TField length( void ) const
         {
             return sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]);
         }
-        inline value_type squared_length( void ) const
+        inline TField squared_length( void ) const
         {
             return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
         }
         inline void make_unit_vector( void );
 };
 
-typedef Vec3 Color3;
-typedef Vec3 Offset;
-typedef Vec3 Point3;
+template<typename TField> using Color3 = Vec3<TField>;
+template<typename TField> using Offset = Vec3<TField>;
+template<typename TField> using Point3 = Vec3<TField>;
 }
 
 #include "vec3.inl"
