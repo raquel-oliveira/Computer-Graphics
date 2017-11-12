@@ -17,4 +17,6 @@
 
 Matrix<float> toTranslate(utility::Vec3 distance);
 
+Matrix<float> toScale(utility::Vec3 proportion);
+
 #endif
