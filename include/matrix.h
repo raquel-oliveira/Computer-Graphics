@@ -2,6 +2,7 @@
 #define _MATRIX_
 
 #include <iostream>
+#include <vector>
 
 /**
  * Represents an m x n matrix, with its data and operations.
@@ -39,6 +40,20 @@ class Matrix {
         int rows;               /*< Number of rows. */
         int cols;               /*< Number of columns. */
 
+         /**
+         * Constructor for an m x n matrix.
+         *
+         * It accepts two values: _diag, which is the value for filling
+         * the diagonal; and _others, which fills the other matrix
+         * positions.
+         *
+         * @param _m            Number of lines.
+         * @param _n            Number of columns.
+         * @param _diag			Initial value for cells in the diagonal.
+         * @param _others		Initial value for the other cells.
+         * */
+        Matrix (const int & _m, const int & _n, const TField & _diag, const TField & _others);
+
         /**
          * Constructor for an m x n matrix with a defined value
          * in each cell.
@@ -71,6 +86,12 @@ class Matrix {
          * @param l             Initializer list with matrix elements.
          * */
         Matrix(const std::initializer_list<std::initializer_list<TField>> & l);
+
+        /**
+         * Constructor for a one dimensional matrix from a native array.
+         * @param l             Array with elements of the vector.
+         * */
+        Matrix(const int & n, const TField * array);
 
         /**
          * Copy constructor.
@@ -109,15 +130,15 @@ class Matrix {
          * */
         void swap_lines(const int & i, const int & j);
 
-		/**
-		 * Swap lines of the matrix in a range of columns.
-		 *
-         * @param i     One line.
-         * @param j     Another line.
-		 * @param c1	From column c1.
-		 * @param c2	To column c2.
-		 * */
-		void swap_lines(const int & i, const int & j, const int c1, const int c2);
+    		/**
+    		 * Swap lines of the matrix in a range of columns.
+    		 *
+             * @param i     One line.
+             * @param j     Another line.
+    		 * @param c1	From column c1.
+    		 * @param c2	To column c2.
+    		 * */
+    		void swap_lines(const int & i, const int & j, const int c1, const int c2);
 
         /**
         * Operator [] for accessing rows of a matrix. This
@@ -242,6 +263,14 @@ class Matrix {
          * @return bool         Status if the matrix is symmetric.
          * */
         bool isSymmetric() const;
+
+        /**
+         * Method to get the inverse of a square matrix.
+    		 * Uses LU decomposition to obtain the inverse.
+    		 *
+         * @return Matrix<TField> Matrix inverted.
+         * */
+        Matrix<TField> inverse() const;
 
 };
 

@@ -3,6 +3,29 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include "matrixDecomposer.h"
+#include "linearSystemSolver.h"
+
+template<typename TField>
+Matrix<TField>::Matrix(const int & _m, const int & _n,
+										   const TField & _diag, const TField & _others) : rows {_m}, cols {_n} {
+
+    // Test nullity of number of cols and rows
+    if (!_m or !_n)
+        throw std::logic_error("A matrix cannot have zero rows or columns.");
+
+    // Create data and populate it
+    data = new TField* [_m];
+    for (int i = 0; i < _m; ++i) {
+        *(data + i) = new TField[_n];
+        for (int j = 0; j < _n; ++j) {
+			if (i == j)
+				data[i][j] = _diag;
+			else
+				data[i][j] = _others;
+        }
+    }
+}
 
 template<typename TField>
 Matrix<TField>::Matrix(const int & _m, const int & _n, const TField & _initial) : rows {_m}, cols {_n} {
@@ -70,6 +93,12 @@ Matrix<TField>::Matrix(const std::initializer_list<std::initializer_list<TField>
        }
        ++i;
     }
+}
+
+template<typename TField>
+Matrix<TField>::Matrix(const int & n, const TField * array) : Matrix(n, 1, array[0]) {
+	for (int i = 0; i < n; ++i)
+		this->data[i][0] = array[i];
 }
 
 template<typename TField>
@@ -308,4 +337,31 @@ Matrix<TField> Matrix<TField>::pow(int k) const{
         }
     }
     return p;
+}
+
+template<typename TField>
+Matrix<TField> Matrix<TField>::inverse() const{
+
+	if (this->rows != this->cols)
+		throw std::runtime_error("inverse: The matrix must be square.");
+
+	Matrix<TField> inverse {this->rows, this->cols, 1, 0};
+	// LU decomposition
+	Matrix<TField> L {this->rows, this->cols, 1, 0};
+	Matrix<TField> U {*this};
+	Matrix<TField> P {this->rows, this->cols, 1, 0};
+	MatrixDecomposer<TField>::lu(*this, L,U,P);
+
+	// Solve n linear systems
+	Matrix<TField> I {this->rows, this->cols, 1, 0};	// Identity matrix, source of canonical vectors
+	for (int j = 0; j < this->cols; ++j) {
+		Matrix<TField> b {this->rows, I[j]};
+		Matrix<TField> y {this->rows, 1, 0};
+		LinearSystemSolver<TField>::forward_substitution(L, P*b, y);
+		Matrix<TField> x {this->rows, 1, 0};
+		LinearSystemSolver<TField>::back_substitution(U, y, x);
+		for (int jj = 0; jj < this->cols; ++jj)
+			inverse[jj][j] = x[jj][0];
+	}
+	return inverse;
 }
