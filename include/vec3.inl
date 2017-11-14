@@ -1,4 +1,5 @@
 #include "vec3.h"
+#include "matrix.h"
 
 using namespace utility;
 
@@ -146,6 +147,32 @@ inline Vec3& Vec3::operator*=( const Vec3 & v )
 
   return *this;
 }
+
+inline Vec3 operator*( const Vec3 & v, const Matrix<utility::Vec3::value_type> mat){
+	// Check multiplication condition
+	if (mat.cols != 3 || mat.rows  != 3) //TODO: let general(dont restrict rows)
+			throw std::logic_error("Matrix with bad dimensions");
+	// Multiply
+	Vec3 prod( v.e[Vec3::X]*mat.at(0,0) + v.e[Vec3::Y]*mat.at(1,0) + v.e[Vec3::Z]*mat.at(2,0),
+             v.e[Vec3::X]*mat.at(0,1) + v.e[Vec3::Y]*mat.at(1,1) + v.e[Vec3::Z]*mat.at(2,1),
+             v.e[Vec3::X]*mat.at(0,2) + v.e[Vec3::Y]*mat.at(1,2) + v.e[Vec3::Z]*mat.at(2,2)
+	);
+	return prod;
+}
+
+inline Vec3 mult_mat4( const Vec3 & v, const Matrix<utility::Vec3::value_type> mat){
+	// Check multiplication condition
+	if (mat.cols != 4 || mat.rows  != 4)
+			throw std::logic_error("Matrix with bad dimensions");
+  int w = 1; //1 if Point3 and 0 if vec3
+	// Multiply
+	Vec3 prod( v.e[Vec3::X]*mat.at(0,0) + v.e[Vec3::Y]*mat.at(1,0) + v.e[Vec3::Z]*mat.at(2,0) + w*mat.at(3,0),
+             v.e[Vec3::X]*mat.at(0,1) + v.e[Vec3::Y]*mat.at(1,1) + v.e[Vec3::Z]*mat.at(2,1) + w*mat.at(3,1),
+             v.e[Vec3::X]*mat.at(0,2) + v.e[Vec3::Y]*mat.at(1,2) + v.e[Vec3::Z]*mat.at(2,2) + w*mat.at(3,2)
+	);
+	return prod;
+}
+
 
 // Uso: A /= B;
 inline Vec3& Vec3::operator/=( const Vec3 & v )
