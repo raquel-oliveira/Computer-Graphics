@@ -29,6 +29,8 @@ class Sphere : public Object {
 
       bool hit(const Ray &r_, float t_min, float t_max, Hit& hit) const;
 
+      void transform(Matrix<float> matrix_);
+
       std::string get_info(std::string tab);
 };
 

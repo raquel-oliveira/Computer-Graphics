@@ -33,11 +33,16 @@ bool Sphere::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
   }
 }
 
+void Sphere::transform(Matrix<float> matrix_){
+
+}
+
 std::string Sphere::get_info(std::string tab){
   std::ostringstream info;
   info << tab << "Sphere: \n";
   info << tab << "\t Center Point: " << center_ << "\n";
   info << tab << "\t Radius Point: " << radius_ << "\n";
+  info << tab << "\t Transformation not implemented" << center_ << "\n";
   info << material->get_info(tab+"\t") << "\n";
 
   return info.str();

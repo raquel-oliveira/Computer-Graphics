@@ -39,6 +39,11 @@ bool Triangule::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
   return false;
 }
 
+void Triangule::transform(Matrix<float> matrix_){
+  v0 = mult_mat4(v0,matrix_);
+  v1 = mult_mat4(v1,matrix_);
+  v2 = mult_mat4(v2,matrix_);
+}
 std::string Triangule::get_info(std::string tab){
   std::ostringstream info;
   info << tab << "Triangule: \n";
