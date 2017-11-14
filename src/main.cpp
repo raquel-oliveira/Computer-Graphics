@@ -164,8 +164,8 @@ int main () {
   //s = new BlinnPhongShader();
 
   //Camera
-  Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
-
+//Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
+  Camera* c = new Camera(Point3(0,0,3), Point3(0,0,-1), Vec3(0,1,0), 60, 2);
   Scene scene(&bg);
   scene.setAmbientLight(new AmbientLight(intensidade2));
   scene.addLight(new DistantLight(intensidade4, direction2));
@@ -176,8 +176,8 @@ int main () {
   //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo
   scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, toon3)); //big one
 
-  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, toon2)); //center
-  //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, toon4)); //lado direto
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, toon2)); //center
+  scene.addObject(new Sphere(Point3(1,0,-1), 0.5, toon4)); //lado direto
 
   //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, Material_extra2));
     //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));

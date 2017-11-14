@@ -28,7 +28,8 @@ Image Raytracer::render (std::string name, int n_col, int n_row){
       for(int k = 0; k < nb_samples; k++){
         float u = (j+std::generate_canonical<double, 10>(gen))/ n_col;
         float v =  1 - (i+std::generate_canonical<double, 10>(gen))/ n_row;
-        Ray r(camera->origin(), camera->llc()+(u*camera->horizontal())+(v*camera->vertical()));
+        Ray r = camera->get_ray(u,v);
+        //Ray r (camera->origin(), camera->llc()+(u*camera->horizontal())+(v*camera->vertical()));
         col+= shader->find_color(scene, r);;
       }
       col = col/nb_samples;
