@@ -49,7 +49,7 @@ init:
 
 # Alvo (target) para a construcao do executavel create1
 # Define o arquivo build/render.o como dependencia
-render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/triangule.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o $(OBJ_DIR)/ToonShader.o $(OBJ_DIR)/ToonMaterial.o $(OBJ_DIR)/pontualLight.o $(OBJ_DIR)/transform.o
+render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/triangule.o $(OBJ_DIR)/cube.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o $(OBJ_DIR)/ToonShader.o $(OBJ_DIR)/ToonMaterial.o $(OBJ_DIR)/pontualLight.o $(OBJ_DIR)/transform.o
 	$(CC) $(CFLAGS) -o render $^
 	@echo "Executavel ./render criado\n"
 
@@ -105,6 +105,9 @@ $(OBJ_DIR)/sphere.o: $(SRC_DIR)/sphere.cpp $(INC_DIR)/sphere.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 # Define o arquivo src/triangule.cpp como dependencia
 $(OBJ_DIR)/triangule.o: $(SRC_DIR)/triangule.cpp $(INC_DIR)/triangule.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/cube.cpp como dependencia
+$(OBJ_DIR)/cube.o: $(SRC_DIR)/cube.cpp $(INC_DIR)/cube.h $(INC_DIR)/triangule.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 #### Material
