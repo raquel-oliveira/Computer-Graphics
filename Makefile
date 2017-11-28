@@ -49,7 +49,7 @@ init:
 
 # Alvo (target) para a construcao do executavel create1
 # Define o arquivo build/render.o como dependencia
-render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/triangule.o $(OBJ_DIR)/cube.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o $(OBJ_DIR)/ToonShader.o $(OBJ_DIR)/ToonMaterial.o $(OBJ_DIR)/pontualLight.o $(OBJ_DIR)/transform.o
+render: $(OBJ_DIR)/main.o $(OBJ_DIR)/util.o $(OBJ_DIR)/image.o $(OBJ_DIR)/blinnPhongShader.o $(OBJ_DIR)/lambertianShader.o $(OBJ_DIR)/distantLight.o $(OBJ_DIR)/sphere.o $(OBJ_DIR)/triangule.o $(OBJ_DIR)/cube.o $(OBJ_DIR)/raytracer.o  $(OBJ_DIR)/ambientLight.o $(OBJ_DIR)/DiffuseShader.o $(OBJ_DIR)/MetalMaterial.o $(OBJ_DIR)/LambertianMaterial.o $(OBJ_DIR)/RecursiveShader.o $(OBJ_DIR)/ToonShader.o $(OBJ_DIR)/ToonMaterial.o $(OBJ_DIR)/pontualLight.o $(OBJ_DIR)/transform.o $(OBJ_DIR)/spotLight.o
 	$(CC) $(CFLAGS) -o render $^
 	@echo "Executavel ./render criado\n"
 
@@ -97,6 +97,9 @@ $(OBJ_DIR)/distantLight.o: $(SRC_DIR)/distantLight.cpp $(INC_DIR)/light.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 # Define o arquivo src/pontualLight.cpp como dependencia
 $(OBJ_DIR)/pontualLight.o: $(SRC_DIR)/pontualLight.cpp $(INC_DIR)/light.h
+	$(CC) -c $(CFLAGS) -o $@ $<
+# Define o arquivo src/SpotLight.cpp como dependencia
+$(OBJ_DIR)/spotLight.o: $(SRC_DIR)/spotLight.cpp $(INC_DIR)/light.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 #### Object

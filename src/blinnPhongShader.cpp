@@ -21,11 +21,11 @@ Color3 BlinnPhongShader::find_color(Scene scene, const Ray& r_) const{
         cosNH = dot(hr.normal, hvalue);
         float maxNL = std::max(0.f, (float)cosNL);
         float maxNH = std::max(0.f, (float)cosNH);
-        color += difuseR * l->get_intensity() * maxNL;
-        color += specularR * l->get_intensity() * pow(maxNH, hr.material->get_alpha());
+        color += difuseR * l->get_intensity(hr.point) * maxNL;
+        color += specularR * l->get_intensity(hr.point) * pow(maxNH, hr.material->get_alpha());
       }
     }
-    color+= ambientR * scene.getAmbientLight()->get_intensity();
+    color+= ambientR * scene.getAmbientLight()->get_intensity(hr.point);
     return color;
   }
   return scene.getBg()->get(r_);

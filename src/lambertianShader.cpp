@@ -14,9 +14,9 @@ Color3 LambertianShader::find_color(Scene scene, const Ray& r_) const{
       lvalue.make_unit_vector();
       cosNL = dot(hr.normal,lvalue);
       float max = std::max(0.f, (float)cosNL);
-      color += incidentLight * l->get_intensity() * max;
+      color += incidentLight * l->get_intensity(hr.point) * max;
     }
-    color+=scene.getAmbientLight()->get_intensity();
+    color+=scene.getAmbientLight()->get_intensity(hr.point);
     return color;
   }
   return scene.getBg()->get(r_);

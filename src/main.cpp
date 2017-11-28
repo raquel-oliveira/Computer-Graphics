@@ -53,11 +53,11 @@ int main () {
                                                     {CODIFICATION,"binary"},
                                                     {SIZE_HEIGHT, "600"},
                                                     {SIZE_WIDTH, "1200"},
-                                                    {UPPER_LEFT, "0.5 0.7 1"},
-                                                    {UPPER_RIGHT, "0.5 0.7 1"},
-                                                    {LOWER_LEFT, "1 1 1"},
-                                                    {LOWER_RIGHT, "1 1 1"},
-                                                    {SAMPLE, "1"}
+                                                    {UPPER_LEFT, "0.5 0.5 0.5"},
+                                                    {UPPER_RIGHT, "0.5 0.5 0.5"},
+                                                    {LOWER_LEFT, "0 0 0"},
+                                                    {LOWER_RIGHT, "0 0 0"},
+                                                    {SAMPLE, "32"}
                                                   };
 
   //Parse
@@ -89,17 +89,26 @@ int main () {
   Color3 difuso2(0.0,0.3,0.8);
   Color3 difuso3(0.7,0.2,0.1);
   Color3 difuso4(0.8,0.8,0.8);
+  Color3 difuso5(0.9,0.2,0.1);
+  Color3 difuso6(0.2,0.9,0.2);
+  Color3 difuso7(0.1,0.2,0.9);
+  Color3 difuso8(0.7,0.7,0.1);
   Color3 lb_col(0.8,0.3,0.3);
   Color3 lb_col2(0.8,0.8,0.0);
   Color3 met_col(0.8,0.6,0.2);
   Color3 specular1(1,1,1);
   Color3 specular2(0.9,0.9,0.9);
+  Color3 specular3(0.8,0.8,0.8);
+  Color3 specular4(0.8,0.8,0.6);
   //Luzes
   Color3 intensidade1(1,1,1);
   Color3 intensidade2(0.4,0.4,0.4);
   Color3 intensidade3(0.5,0.5,0.5);
   Color3 intensidade4(0.8,0.8,0.8);
   Color3 intensidade5(0.2,0.2,0.2);
+  Color3 intensidade6(0.3,0.9,0.3);
+  Color3 intensidade7(0.7,0.2,0.2);
+  Color3 intensidade8(0.2,0.2,0.7);
   Vec3 direction(20,10,15);
   Vec3 direction2(-8,7,0);
   Vec3 direction3(-3,20,0);
@@ -123,7 +132,12 @@ int main () {
   std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2));
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
-
+  std::shared_ptr<Material> floor_mat(new Material(neutro, difuso4, ambiente1, 64));
+  std::shared_ptr<Material> redish(new Material(specular3, difuso5, ambiente1, 256));
+  std::shared_ptr<Material> greenish(new Material(specular3, difuso6, ambiente1, 256));
+  std::shared_ptr<Material> blueish(new Material(specular4, difuso7, ambiente1, 256));
+  std::shared_ptr<Material> gnd(new Material(neutro, difuso4, ambiente1, 8));
+  std::shared_ptr<Material> tri(new Material(specular3, difuso8, ambiente1, 256));
   std::vector<Color3> colors; //red gradient
   colors.push_back(Color3(0.10,0,0));
   colors.push_back(Color3(0.25,0,0));
@@ -167,11 +181,25 @@ int main () {
 
   //Camera
   //Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
-  Camera* c = new Camera(Point3(-2,2,3), Point3(0,0,-1), Vec3(0,1,0), 90, 2);
+  Point3 lookf = Point3(9, 3.5, 15);
+  Point3 lookat = Point3(0,0,-1);
+  Vec3 vup = Vec3(0,1,0);
+  float vfov = 30;
+  float asp = 2.3;
+  Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
   Scene scene(&bg);
-  scene.setAmbientLight(new AmbientLight(intensidade2));
+  //scene.setAmbientLight(new AmbientLight(intensidade2));
   //scene.addLight(new DistantLight(intensidade4, direction2));
-  scene.addLight(new PontualLight(intensidade3, Point3(1.5,4,-0.9)));
+  //scene.addLight(new PontualLight(intensidade3, Point3(1.5,4,-0.9)));
+  scene.addLight(new SpotLight(intensidade6, Point3(0,1,2), Point3(0,0,-2), 15));
+  scene.addLight(new SpotLight(intensidade7, Point3(0,4,-2), Point3(-4,0,-2), 18));
+  scene.addLight(new SpotLight(intensidade8, Point3(0,4,-2), Point3(4,0,-2), 18));
+//  scene.addLight(new DistantLight(Color3(0.25,0.1,0.1), Vec3(0, 0.5, 1)));
+  scene.addObject(new Sphere(Point3(0,0,-2), 0.5, greenish));
+  scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
+  scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
+  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, gnd));
+
 
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
   //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo
@@ -179,8 +207,8 @@ int main () {
 
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, MaterialS1)); //center
   //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1)); //lado direto
-  scene.addObject(new Cube(Point3(0,3,-1), 1, met1));
-  scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, met1));
+  //scene.addObject(new Cube(Point3(0,3,-1), 1, met1));
+  //scene.addObject(new Sphere(Point3(0,-100.5,-1), 100.f, floor_mat));
   //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
   //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, met2));
   //scene.addObject(new Sphere(direction4, 0.1, MaterialS1));
