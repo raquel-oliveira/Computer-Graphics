@@ -53,11 +53,11 @@ int main () {
                                                     {CODIFICATION,"binary"},
                                                     {SIZE_HEIGHT, "600"},
                                                     {SIZE_WIDTH, "1200"},
-                                                    {UPPER_LEFT, "0.5 0.5 0.5"},
-                                                    {UPPER_RIGHT, "0.5 0.5 0.5"},
-                                                    {LOWER_LEFT, "0 0 0"},
-                                                    {LOWER_RIGHT, "0 0 0"},
-                                                    {SAMPLE, "32"}
+                                                    {UPPER_LEFT, "1 0.7 1"},
+                                                    {UPPER_RIGHT, "1 0.7 1"},
+                                                    {LOWER_LEFT, "1 0.7 1"},
+                                                    {LOWER_RIGHT, "1 0.7 1"},
+                                                    {SAMPLE, "1"}
                                                   };
 
   //Parse
@@ -138,6 +138,8 @@ int main () {
   std::shared_ptr<Material> blueish(new Material(specular4, difuso7, ambiente1, 256));
   std::shared_ptr<Material> gnd(new Material(neutro, difuso4, ambiente1, 8));
   std::shared_ptr<Material> tri(new Material(specular3, difuso8, ambiente1, 256));
+  std::shared_ptr<Material> dia(new DielectricMaterial(1.5));
+
   std::vector<Color3> colors; //red gradient
   colors.push_back(Color3(0.10,0,0));
   colors.push_back(Color3(0.25,0,0));
@@ -175,18 +177,18 @@ int main () {
   //s = new Normal2RGB();
   //s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
   //s = new LambertianShader();
-  //s = new RecursiveShader(5);
+  s = new RecursiveShader(5);
   //s = new ToonShader();
-   s = new BlinnPhongShader();
+  // s = new BlinnPhongShader();
 
   //Camera
-  //Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
+  Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
   Point3 lookf = Point3(9, 3.5, 15);
   Point3 lookat = Point3(0,0,-1);
   Vec3 vup = Vec3(0,1,0);
   float vfov = 30;
   float asp = 2.3;
-  Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
+//  Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
   Scene scene(&bg);
   //scene.setAmbientLight(new AmbientLight(intensidade2));
   //scene.addLight(new DistantLight(intensidade4, direction2));
@@ -194,11 +196,14 @@ int main () {
   scene.addLight(new SpotLight(intensidade6, Point3(0,1,2), Point3(0,0,-2), 15));
   scene.addLight(new SpotLight(intensidade7, Point3(0,4,-2), Point3(-4,0,-2), 18));
   scene.addLight(new SpotLight(intensidade8, Point3(0,4,-2), Point3(4,0,-2), 18));
-//  scene.addLight(new DistantLight(Color3(0.25,0.1,0.1), Vec3(0, 0.5, 1)));
-  scene.addObject(new Sphere(Point3(0,0,-2), 0.5, greenish));
-  scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
-  scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
-  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, gnd));
+  //scene.addLight(new DistantLight(Color3(0.25,0.1,0.1), Vec3(0, 0.5, 1)));
+  //scene.addObject(new Sphere(Point3(0,0,-2), 0.5, greenish));
+  //scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
+  //scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
+  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb2));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
+  scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
+  scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, dia));
 
 
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
@@ -216,10 +221,10 @@ int main () {
   //scene.addObject(t);
   //scene.addObject(new Triangule(Point3(0,1,-1),Point3(1, 2, -1),Point3(0,2,-1),true, MaterialS1));
 
-    Raytracer r(c, scene, s, nb_sample );
-    Image img = r.render("img1 "+time_file, n_col, n_row);
-    if (properties[CODIFICATION] == "binary"){ img.create_by_binary(); }
-    else if (properties[CODIFICATION] == "ascii") { img.create_by_ascii();}
-    else{std::cerr << "Codification not accepted (yet)" << std::endl;}
+  Raytracer r(c, scene, s, nb_sample );
+  Image img = r.render("img1 "+time_file, n_col, n_row);
+  if (properties[CODIFICATION] == "binary"){ img.create_by_binary(); }
+  else if (properties[CODIFICATION] == "ascii") { img.create_by_ascii();}
+  else{std::cerr << "Codification not accepted (yet)" << std::endl;}
 
 }

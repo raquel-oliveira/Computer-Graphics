@@ -84,4 +84,23 @@ class ToonMaterial : public Material {
 
     inline std::string get_info(std::string tab);
 };
+
+class DielectricMaterial : public Material {
+  private:
+    float ref_idx; //refractive indice
+
+  public:
+
+    DielectricMaterial(float refrac)
+    : Material(Color3(0,0,0), Color3(0,0,0), Color3(0,0,0), 0),
+       ref_idx(refrac)
+    {}
+
+    bool refract (const Vec3& v, Vec3& n, float ni_over_nt, Vec3& refracted) const;
+
+    bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const;
+
+    inline std::string get_info(std::string tab);
+
+};
 #endif
