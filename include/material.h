@@ -96,7 +96,15 @@ class DielectricMaterial : public Material {
        ref_idx(refrac)
     {}
 
-    bool refract (const Vec3& v, Vec3& n, float ni_over_nt, Vec3& refracted) const;
+    bool refract (const Vec3& v, const Vec3& n, float ni_over_nt, Vec3& refracted) const;
+
+    bool refract (const Vec3& normal, const Vec3& incident, Vec3& refracted, float n1, float n2) const;
+
+    float reflectance(const Vec3& normal, const Vec3& incident, float n1, float n2) const;
+
+    float schlick(float cosine, float ref_idx) const;
+
+    float schlick2(const Vec3& normal, const Vec3&incident, float n1, float n2) const;
 
     bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const;
 

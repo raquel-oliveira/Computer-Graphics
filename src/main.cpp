@@ -53,11 +53,11 @@ int main () {
                                                     {CODIFICATION,"binary"},
                                                     {SIZE_HEIGHT, "600"},
                                                     {SIZE_WIDTH, "1200"},
-                                                    {UPPER_LEFT, "1 0.7 1"},
-                                                    {UPPER_RIGHT, "1 0.7 1"},
-                                                    {LOWER_LEFT, "1 0.7 1"},
-                                                    {LOWER_RIGHT, "1 0.7 1"},
-                                                    {SAMPLE, "1"}
+                                                    {UPPER_LEFT, "0.68 0.81 0.96"},
+                                                    {UPPER_RIGHT, "0.68 0.81 0.96"},
+                                                    {LOWER_LEFT, "0.68 0.81 0.96"},
+                                                    {LOWER_RIGHT, "0.68 0.81 0.96"},
+                                                    {SAMPLE, "100"}
                                                   };
 
   //Parse
@@ -177,18 +177,18 @@ int main () {
   //s = new Normal2RGB();
   //s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
   //s = new LambertianShader();
-  s = new RecursiveShader(5);
+  s = new RecursiveShader(100);
   //s = new ToonShader();
   // s = new BlinnPhongShader();
 
   //Camera
-  Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
-  Point3 lookf = Point3(9, 3.5, 15);
+  //Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
+  Point3 lookf = Point3(9, 3.5, 2);
   Point3 lookat = Point3(0,0,-1);
   Vec3 vup = Vec3(0,1,0);
-  float vfov = 30;
+  float vfov = 20;
   float asp = 2.3;
-//  Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
+  Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
   Scene scene(&bg);
   //scene.setAmbientLight(new AmbientLight(intensidade2));
   //scene.addLight(new DistantLight(intensidade4, direction2));
@@ -201,9 +201,11 @@ int main () {
   //scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
   //scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
   scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb2));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
-  scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
-  scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, dia));
+  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
+  //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
+  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, dia));
+  scene.addObject(new Sphere(Point3(0,0,-1), -0.48, dia));
+  scene.addObject(new Sphere(Point3(0,0,-2), 0.5, lb1));
 
 
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
