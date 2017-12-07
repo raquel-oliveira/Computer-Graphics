@@ -3,6 +3,7 @@
 #include "vec3.h"
 #include <sstream>      // std::ostringstream
 #include "object.h"
+#include "texture.h"
 #include <vector>
 
 class Material {
@@ -37,10 +38,13 @@ class Material {
 };
 
 class LambertianMaterial : public Material {
+  private:
+    Texture *albedo;
 
   public:
-    LambertianMaterial(Color3 a)
-     : Material(Color3(0,0,0), a, Color3(0,0,0), 0) {}
+    LambertianMaterial(Color3 a, Texture *b)
+     : Material(Color3(0,0,0), a, Color3(0,0,0), 0)
+     , albedo(b) {}
 
     bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const;
 

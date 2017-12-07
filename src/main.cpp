@@ -57,7 +57,7 @@ int main () {
                                                     {UPPER_RIGHT, "0.68 0.81 0.96"},
                                                     {LOWER_LEFT, "0.68 0.81 0.96"},
                                                     {LOWER_RIGHT, "0.68 0.81 0.96"},
-                                                    {SAMPLE, "100"}
+                                                    {SAMPLE, "12"}
                                                   };
 
   //Parse
@@ -114,6 +114,9 @@ int main () {
   Vec3 direction3(-3,20,0);
   Vec3 direction4(0.5,0,-0.6);
 
+  Texture* grayTexture = new Constant_texture(Color3(0.5,0.5,0.5));
+  Texture* purpleTexture = new Constant_texture(Color3(0.66,0.44,0.87));
+
 
   //Material
   std::shared_ptr<Material> nothing(new Material(neutro,neutro,neutro, 0));
@@ -128,8 +131,8 @@ int main () {
   std::shared_ptr<Material> MaterialS2_64_dif(new Material(neutro, difuso2, ambiente1, 64));
   std::shared_ptr<Material> Material_extra(new Material(specular1, difuso3, ambiente1, 64));
   std::shared_ptr<Material> Material_extra2(new Material(neutro, difuso4, ambiente1, 64));
-  std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col));
-  std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2));
+  std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col, grayTexture));
+  std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2, purpleTexture));
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
   std::shared_ptr<Material> floor_mat(new Material(neutro, difuso4, ambiente1, 64));
@@ -139,6 +142,7 @@ int main () {
   std::shared_ptr<Material> gnd(new Material(neutro, difuso4, ambiente1, 8));
   std::shared_ptr<Material> tri(new Material(specular3, difuso8, ambiente1, 256));
   std::shared_ptr<Material> dia(new DielectricMaterial(1.5));
+
 
   std::vector<Color3> colors; //red gradient
   colors.push_back(Color3(0.10,0,0));
@@ -203,8 +207,8 @@ int main () {
   scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb2));
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
   //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
-  scene.addObject(new Sphere(Point3(0,0,-1), 0.5, dia));
-  scene.addObject(new Sphere(Point3(0,0,-1), -0.48, dia));
+  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, dia));
+  //scene.addObject(new Sphere(Point3(0,0,-1), -0.48, dia));
   scene.addObject(new Sphere(Point3(0,0,-2), 0.5, lb1));
 
 

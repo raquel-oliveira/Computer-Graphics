@@ -115,7 +115,7 @@ $(OBJ_DIR)/cube.o: $(SRC_DIR)/cube.cpp $(INC_DIR)/cube.h $(INC_DIR)/triangule.h
 
 #### Material
 # Define o arquivo src/LambertianMaterial.cpp como dependencia
-$(OBJ_DIR)/LambertianMaterial.o: $(SRC_DIR)/lambertianMaterial.cpp $(INC_DIR)/material.h $(INC_DIR)/util.h $(INC_DIR)/object.h $(INC_DIR)/vec3.h
+$(OBJ_DIR)/LambertianMaterial.o: $(SRC_DIR)/lambertianMaterial.cpp $(INC_DIR)/material.h $(INC_DIR)/util.h $(INC_DIR)/object.h $(INC_DIR)/vec3.h $(INC_DIR)/texture.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 # Define o arquivo src/MetalMaterial.cpp como dependencia
 $(OBJ_DIR)/MetalMaterial.o: $(SRC_DIR)/metalMaterial.cpp $(INC_DIR)/material.h $(INC_DIR)/util.h  $(INC_DIR)/object.h $(INC_DIR)/vec3.h
@@ -126,6 +126,7 @@ $(OBJ_DIR)/ToonMaterial.o: $(SRC_DIR)/toonMaterial.cpp $(INC_DIR)/material.h $(I
 # Define o arquivo src/DielectricMaterial.cpp como dependencia
 $(OBJ_DIR)/DielectricMaterial.o: $(SRC_DIR)/dielectricMaterial.cpp $(INC_DIR)/material.h $(INC_DIR)/util.h  $(INC_DIR)/object.h $(INC_DIR)/vec3.h
 	$(CC) -c $(CFLAGS) -o $@ $<
+
 # Alvo (target) para a geração automatica de documentacao
 # usando o Doxygen. Sempre remove a documentacao anterior (caso exista)
 # e gera uma nova.
