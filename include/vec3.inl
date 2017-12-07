@@ -207,6 +207,10 @@ inline Vec3& Vec3::operator/=( const value_type t )
   return *this;
 }
 
+inline float Vec3::sines (void) const{
+  return sin(10*e[X])*sin(10*e[Y])*sin(10*e[Z]);
+}
+
 // Uso: Vec3 A = unit_vector( B );
 inline Vec3 unit_vector( const Vec3 & v )
 {

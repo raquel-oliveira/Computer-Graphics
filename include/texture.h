@@ -26,4 +26,27 @@ class Constant_texture : public Texture{
     }
 };
 
+class Checker_texture : public Texture{
+  private:
+    Texture *odd;
+    Texture *even;
+  public:
+    Checker_texture(Texture* t1, Texture* t2) : odd(t1), even(t2) {}
+    Color3 value(float u, float v, const Vec3& p) const{
+      float sines = p.sines();
+      if(sines < 0) return odd->value(u, v, p);
+      else return even->value(u, v, p);
+    }
+
+    std::string get_info(std::string tab){
+      std::ostringstream info;
+
+      info << tab <<"Checker Texture: \n";
+      info << odd->get_info(tab+tab);
+      info << even->get_info(tab+tab);
+
+      return info.str();
+    }
+
+};
 #endif

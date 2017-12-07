@@ -116,6 +116,7 @@ int main () {
 
   Texture* grayTexture = new Constant_texture(Color3(0.5,0.5,0.5));
   Texture* purpleTexture = new Constant_texture(Color3(0.66,0.44,0.87));
+  Texture* grayPurpleTexture = new Checker_texture(grayTexture, purpleTexture);
 
 
   //Material
@@ -133,6 +134,7 @@ int main () {
   std::shared_ptr<Material> Material_extra2(new Material(neutro, difuso4, ambiente1, 64));
   std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col, grayTexture));
   std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2, purpleTexture));
+  std::shared_ptr<Material> lb3(new LambertianMaterial(lb_col2, grayPurpleTexture));
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
   std::shared_ptr<Material> floor_mat(new Material(neutro, difuso4, ambiente1, 64));
@@ -204,7 +206,7 @@ int main () {
   //scene.addObject(new Sphere(Point3(0,0,-2), 0.5, greenish));
   //scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
   //scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
-  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb2));
+  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb3));
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
   //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, dia));

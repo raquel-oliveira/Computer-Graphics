@@ -61,6 +61,7 @@ class Vec3
             return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
         }
         inline void make_unit_vector( void );
+        inline float sines( void ) const;
 };
 
 typedef Vec3 Color3;
