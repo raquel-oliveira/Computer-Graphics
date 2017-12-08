@@ -11,5 +11,8 @@ bool LambertianMaterial::scatter(const Ray& r, struct Hit& hr, Vec3& attenuation
 }
 
 std::string LambertianMaterial::get_info(std::string tab){
-  return "Lambertian - to implement";
+  std::ostringstream info;
+  info << tab << "Lambertian Material\n";
+  info << albedo->get_info(tab);
+  return info.str();
 }

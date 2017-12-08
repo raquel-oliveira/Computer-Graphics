@@ -22,6 +22,7 @@
 #include "matrix.h"
 #include "transform.h"
 #include "cube.h"
+#include "perlin_texture.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"
@@ -117,6 +118,7 @@ int main () {
   Texture* grayTexture = new Constant_texture(Color3(0.5,0.5,0.5));
   Texture* purpleTexture = new Constant_texture(Color3(0.66,0.44,0.87));
   Texture* grayPurpleTexture = new Checker_texture(grayTexture, purpleTexture);
+  Texture* blackNoise = new Perlin_texture(1.3);
 
 
   //Material
@@ -132,7 +134,7 @@ int main () {
   std::shared_ptr<Material> MaterialS2_64_dif(new Material(neutro, difuso2, ambiente1, 64));
   std::shared_ptr<Material> Material_extra(new Material(specular1, difuso3, ambiente1, 64));
   std::shared_ptr<Material> Material_extra2(new Material(neutro, difuso4, ambiente1, 64));
-  std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col, grayTexture));
+  std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col, blackNoise));
   std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2, purpleTexture));
   std::shared_ptr<Material> lb3(new LambertianMaterial(lb_col2, grayPurpleTexture));
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));

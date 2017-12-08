@@ -3,6 +3,7 @@
 
 #include "vec3.h"
 #include <string>
+#include <sstream>      // std::ostringstream
 
 class Texture {
   public:
