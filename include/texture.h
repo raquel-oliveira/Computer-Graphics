@@ -21,7 +21,7 @@ class Constant_texture : public Texture{
       std::ostringstream info;
 
       info << tab <<"Constant Texture: \n";
-      info << tab << tab << "\t Color :" << color << "\n";
+      info << tab << "\tColor :" << color << "\n";
 
       return info.str();
     }
@@ -43,8 +43,8 @@ class Checker_texture : public Texture{
       std::ostringstream info;
 
       info << tab <<"Checker Texture: \n";
-      info << odd->get_info(tab+tab);
-      info << even->get_info(tab+tab);
+      info << odd->get_info(tab+"\n");
+      info << even->get_info(tab+"\n");
 
       return info.str();
     }

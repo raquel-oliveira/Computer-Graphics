@@ -25,6 +25,10 @@ class Material {
 
     inline virtual bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const { return false;}
 
+    virtual Vec3 emitted(float u, float v, const Vec3 &p) const {
+      return Vec3(0,0,0);
+    }
+
     inline virtual std::string get_info(std::string tab){
       std::ostringstream info;
       info << tab << "Material : \n";
@@ -114,5 +118,34 @@ class DielectricMaterial : public Material {
 
     inline std::string get_info(std::string tab);
 
+};
+
+class Luminary : public Material {
+  private:
+    Texture* emit;
+  public:
+    Luminary():
+     Material(Color3(0,0,0), Color3(0,0,0), Color3(0,0,0), 0) {
+       emit = new Constant_texture(Color3(1,1,1));
+     }
+    Luminary(Texture *e):
+     Material(Color3(0,0,0), Color3(0,0,0), Color3(0,0,0), 0),
+     emit(e) {}
+
+    bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const{
+      return false;
+    }
+
+    Vec3 emitted(float u, float v, const Vec3 &p) const {
+      return emit->value(u, v, p);
+    }
+
+    inline virtual std::string get_info(std::string tab){
+      std::ostringstream info;
+      info << tab << "Luminary Material : \n";
+      info << emit->get_info(tab+"\t");
+
+      return info.str();
+    }
 };
 #endif

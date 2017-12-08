@@ -55,10 +55,10 @@ int main () {
                                                     {CODIFICATION,"binary"},
                                                     {SIZE_HEIGHT, "600"},
                                                     {SIZE_WIDTH, "1200"},
-                                                    {UPPER_LEFT, "0.68 0.81 0.96"},
-                                                    {UPPER_RIGHT, "0.68 0.81 0.96"},
-                                                    {LOWER_LEFT, "0.68 0.81 0.96"},
-                                                    {LOWER_RIGHT, "0.68 0.81 0.96"},
+                                                    {UPPER_LEFT, "0 0 0"},
+                                                    {UPPER_RIGHT, "0 0 0"},
+                                                    {LOWER_LEFT, "0 0 0"},
+                                                    {LOWER_RIGHT, "0 0 0"},
                                                     {SAMPLE, "30"}
                                                   };
 
@@ -149,7 +149,7 @@ int main () {
   std::shared_ptr<Material> gnd(new Material(neutro, difuso4, ambiente1, 8));
   std::shared_ptr<Material> tri(new Material(specular3, difuso8, ambiente1, 256));
   std::shared_ptr<Material> dia(new DielectricMaterial(1.5));
-
+  std::shared_ptr<Material> star(new Luminary());
 
   std::vector<Color3> colors; //red gradient
   colors.push_back(Color3(0.10,0,0));
@@ -194,13 +194,13 @@ int main () {
   // s = new BlinnPhongShader();
 
   //Camera
-  //Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
+  Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
   Point3 lookf = Point3(9, 3.5, 2);
   Point3 lookat = Point3(0,0,-1);
   Vec3 vup = Vec3(0,1,0);
   float vfov = 20;
   float asp = 2.3;
-  Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
+  //Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
   Scene scene(&bg);
   //scene.setAmbientLight(new AmbientLight(intensidade2));
   //scene.addLight(new DistantLight(intensidade4, direction2));
@@ -219,6 +219,7 @@ int main () {
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, dia));
   //scene.addObject(new Sphere(Point3(0,0,-1), -0.48, dia));
   scene.addObject(new Sphere(Point3(0,0,-2), 0.5, lb4));
+  scene.addObject(new Sphere(Point3(0,1,-2), 0.5, star));
 
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
   //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo
