@@ -23,5 +23,6 @@ Color3 RecursiveShader::find_color2(Scene scene, const Ray& r_, int dp) const{
 std::string RecursiveShader::get_info(std::string tab){
   std::ostringstream info;
       info << tab << "Recursive Shader\n";
+      info << tab << "\tDepth: " << depth <<"\n";
 return info.str();
 }

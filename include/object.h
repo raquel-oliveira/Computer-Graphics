@@ -13,6 +13,9 @@ struct Hit {
     Point3 point;
     Vec3 normal;
     std::shared_ptr<Material> material;
+    //to Image Texture:
+    float u;
+    float v;
 };
 
 class Object {

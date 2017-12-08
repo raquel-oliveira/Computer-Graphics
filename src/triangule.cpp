@@ -33,6 +33,10 @@ bool Triangule::hit(const Ray &r_, float t_min, float t_max, Hit& hit) const{
     hit.point = r_.point_at(hit.t);
     hit.normal = cross(edge1, edge2);
     hit.material = this->material;
+    //TODO: calculate
+    hit.u = 0;
+    hit.v = 0;
+
     //TODO: u and v only update if backfaceCulling
     return true;
   }

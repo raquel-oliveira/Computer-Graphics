@@ -23,6 +23,7 @@
 #include "transform.h"
 #include "cube.h"
 #include "perlin_texture.h"
+#include "image_texture.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"
@@ -58,7 +59,7 @@ int main () {
                                                     {UPPER_RIGHT, "0.68 0.81 0.96"},
                                                     {LOWER_LEFT, "0.68 0.81 0.96"},
                                                     {LOWER_RIGHT, "0.68 0.81 0.96"},
-                                                    {SAMPLE, "12"}
+                                                    {SAMPLE, "30"}
                                                   };
 
   //Parse
@@ -119,6 +120,7 @@ int main () {
   Texture* purpleTexture = new Constant_texture(Color3(0.66,0.44,0.87));
   Texture* grayPurpleTexture = new Checker_texture(grayTexture, purpleTexture);
   Texture* blackNoise = new Perlin_texture(1.3);
+  Texture* prolovers = new Image_texture("images/auroraB.jpg");
 
 
   //Material
@@ -137,6 +139,7 @@ int main () {
   std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col, blackNoise));
   std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2, purpleTexture));
   std::shared_ptr<Material> lb3(new LambertianMaterial(lb_col2, grayPurpleTexture));
+  std::shared_ptr<Material> lb4(new LambertianMaterial(lb_col2, prolovers));
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
   std::shared_ptr<Material> floor_mat(new Material(neutro, difuso4, ambiente1, 64));
@@ -180,6 +183,7 @@ int main () {
   colors4.push_back(Color3(1,1,0));
   std::shared_ptr<Material> toon4(new ToonMaterial(colors4));
 
+
   //Shader
   Shader* s;
   //s = new Normal2RGB();
@@ -208,13 +212,13 @@ int main () {
   //scene.addObject(new Sphere(Point3(0,0,-2), 0.5, greenish));
   //scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
   //scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
-  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb3));
+  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb1));
+  //scene.addObject(new Cube(Point3(1,0,-1), 1, lb4));
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
   //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, dia));
   //scene.addObject(new Sphere(Point3(0,0,-1), -0.48, dia));
-  scene.addObject(new Sphere(Point3(0,0,-2), 0.5, lb1));
-
+  scene.addObject(new Sphere(Point3(0,0,-2), 0.5, lb4));
 
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
   //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo

@@ -6,7 +6,7 @@ bool LambertianMaterial::scatter(const Ray& r, struct Hit& hr, Vec3& attenuation
   Vec3 target = hr.point + hr.normal + random_point_sphere();
   scattered = Ray(hr.point, target-hr.point);
   //attenuation = k_d;
-  attenuation = albedo->value(0,0,hr.point);
+  attenuation = albedo->value(hr.u,hr.v,hr.point);
   return true;
 }
 
