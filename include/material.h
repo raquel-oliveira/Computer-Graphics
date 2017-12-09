@@ -44,11 +44,19 @@ class Material {
 class LambertianMaterial : public Material {
   private:
     Texture *albedo;
+    bool hasTexture;
 
   public:
     LambertianMaterial(Color3 a, Texture *b)
      : Material(Color3(0,0,0), a, Color3(0,0,0), 0)
-     , albedo(b) {}
+     , albedo(b) {
+       hasTexture = true;
+     }
+
+     LambertianMaterial(Color3 a)
+      : Material(Color3(0,0,0), a, Color3(0,0,0), 0){
+        hasTexture = false;
+      }
 
     bool scatter(const Ray& r, struct Hit& hr, Vec3& attenuation, Ray& scattered ) const;
 

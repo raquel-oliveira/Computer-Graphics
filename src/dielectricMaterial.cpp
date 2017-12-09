@@ -114,6 +114,6 @@ bool DielectricMaterial::scatter(const Ray& r, struct Hit& hr, Vec3& attenuation
 std::string DielectricMaterial::get_info(std::string tab){
   std::ostringstream info;
   info << tab << "Dielectric\n";
-  info << tab << tab << "Refractive indice :" << ref_idx;
+  info << tab << "\tRefractive indice :" << ref_idx;
   return info.str();
 }
