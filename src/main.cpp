@@ -22,8 +22,6 @@
 #include "matrix.h"
 #include "transform.h"
 #include "cube.h"
-#include "perlin_texture.h"
-#include "image_texture.h"
 
 #define NAME "NAME"
 #define TYPE "TYPE"
@@ -55,11 +53,11 @@ int main () {
                                                     {CODIFICATION,"binary"},
                                                     {SIZE_HEIGHT, "600"},
                                                     {SIZE_WIDTH, "1200"},
-                                                    {UPPER_LEFT, "0 0 0"},
-                                                    {UPPER_RIGHT, "0 0 0"},
+                                                    {UPPER_LEFT, "0.5 0.5 0.5"},
+                                                    {UPPER_RIGHT, "0.5 0.5 0.5"},
                                                     {LOWER_LEFT, "0 0 0"},
                                                     {LOWER_RIGHT, "0 0 0"},
-                                                    {SAMPLE, "30"}
+                                                    {SAMPLE, "32"}
                                                   };
 
   //Parse
@@ -116,12 +114,6 @@ int main () {
   Vec3 direction3(-3,20,0);
   Vec3 direction4(0.5,0,-0.6);
 
-  Texture* grayTexture = new Constant_texture(Color3(0.5,0.5,0.5));
-  Texture* purpleTexture = new Constant_texture(Color3(0.66,0.44,0.87));
-  Texture* grayPurpleTexture = new Checker_texture(grayTexture, purpleTexture);
-  Texture* blackNoise = new Perlin_texture(1.3);
-  Texture* prolovers = new Image_texture("images/auroraB.jpg");
-
 
   //Material
   std::shared_ptr<Material> nothing(new Material(neutro,neutro,neutro, 0));
@@ -136,10 +128,8 @@ int main () {
   std::shared_ptr<Material> MaterialS2_64_dif(new Material(neutro, difuso2, ambiente1, 64));
   std::shared_ptr<Material> Material_extra(new Material(specular1, difuso3, ambiente1, 64));
   std::shared_ptr<Material> Material_extra2(new Material(neutro, difuso4, ambiente1, 64));
-  std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col, blackNoise));
-  std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2, purpleTexture));
-  std::shared_ptr<Material> lb3(new LambertianMaterial(lb_col2, grayPurpleTexture));
-  std::shared_ptr<Material> lb4(new LambertianMaterial(lb_col2, prolovers));
+  std::shared_ptr<Material> lb1(new LambertianMaterial(lb_col));
+  std::shared_ptr<Material> lb2(new LambertianMaterial(lb_col2));
   std::shared_ptr<Material> met1(new MetalMaterial(met_col));
   std::shared_ptr<Material> met2(new MetalMaterial(difuso4));
   std::shared_ptr<Material> floor_mat(new Material(neutro, difuso4, ambiente1, 64));
@@ -148,9 +138,6 @@ int main () {
   std::shared_ptr<Material> blueish(new Material(specular4, difuso7, ambiente1, 256));
   std::shared_ptr<Material> gnd(new Material(neutro, difuso4, ambiente1, 8));
   std::shared_ptr<Material> tri(new Material(specular3, difuso8, ambiente1, 256));
-  std::shared_ptr<Material> dia(new DielectricMaterial(1.5));
-  std::shared_ptr<Material> star(new Luminary());
-
   std::vector<Color3> colors; //red gradient
   colors.push_back(Color3(0.10,0,0));
   colors.push_back(Color3(0.25,0,0));
@@ -183,43 +170,46 @@ int main () {
   colors4.push_back(Color3(1,1,0));
   std::shared_ptr<Material> toon4(new ToonMaterial(colors4));
 
-
   //Shader
   Shader* s;
   //s = new Normal2RGB();
   //s = new Depth(0,4,Color3(0,0,0),Color3(1,1,1));
   //s = new LambertianShader();
-  s = new RecursiveShader(100);
+  //s = new RecursiveShader(5);
   //s = new ToonShader();
-  // s = new BlinnPhongShader();
+   s = new BlinnPhongShader();
 
   //Camera
-  Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
-  Point3 lookf = Point3(9, 3.5, 2);
+  //Camera* c = new Camera(Point3(-2.0, -1.0, -1.0), Vec3(0,2,0), Vec3(4,0,0), Point3(0,0,0));
+  Point3 lookf = Point3(9, 3.5, 15);
   Point3 lookat = Point3(0,0,-1);
   Vec3 vup = Vec3(0,1,0);
-  float vfov = 20;
+  float vfov = 30;
   float asp = 2.3;
-  //Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
+  Camera* c = new Camera(lookf, lookat, vup, vfov, asp);
   Scene scene(&bg);
   //scene.setAmbientLight(new AmbientLight(intensidade2));
   //scene.addLight(new DistantLight(intensidade4, direction2));
   //scene.addLight(new PontualLight(intensidade3, Point3(1.5,4,-0.9)));
-  scene.addLight(new SpotLight(intensidade6, Point3(0,1,2), Point3(0,0,-2), 15));
-  scene.addLight(new SpotLight(intensidade7, Point3(0,4,-2), Point3(-4,0,-2), 18));
-  scene.addLight(new SpotLight(intensidade8, Point3(0,4,-2), Point3(4,0,-2), 18));
-  //scene.addLight(new DistantLight(Color3(0.25,0.1,0.1), Vec3(0, 0.5, 1)));
-  //scene.addObject(new Sphere(Point3(0,0,-2), 0.5, greenish));
-  //scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
-  //scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
-  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, lb1));
-  //scene.addObject(new Cube(Point3(1,0,-1), 1, lb4));
-  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, lb1));
-  //scene.addObject(new Sphere(Point3(1,0,-1), 0.5, met1));
-  //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, dia));
-  //scene.addObject(new Sphere(Point3(0,0,-1), -0.48, dia));
-  scene.addObject(new Sphere(Point3(0,0,-2), 0.5, lb4));
-  scene.addObject(new Sphere(Point3(0,1,-2), 0.5, star));
+  //scene.addLight(new SpotLight(intensidade6, Point3(0,1,2), Point3(0,0,-2), 15));
+  //scene.addLight(new SpotLight(intensidade7, Point3(0,4,-2), Point3(-4,0,-2), 18));
+  //scene.addLight(new SpotLight(intensidade8, Point3(0,4,-2), Point3(4,0,-2), 18));
+//  scene.addLight(new DistantLight(Color3(0.25,0.1,0.1), Vec3(0, 0.5, 1)));
+  scene.addObject(new Sphere(Point3(0,0,-2), 0.5, greenish));
+  scene.addObject(new Sphere(Point3(-4,0,-2), 0.5, redish));
+  scene.addObject(new Sphere(Point3(4,0,-2), 0.5, blueish));
+  scene.addObject(new Sphere(Point3(0,-1000.5,-1), 1000.0, gnd));
+  scene.addLight(new PontualLight(intensidade3, Point3(3.5,0.2,-2)));
+
+  Vec3 horizontal(10,0,0);
+    Vec3 vertical(0,0,2);
+    AreaLight * teste = new AreaLight(Point3(-5,3,0), vertical, horizontal, 2, 20,8, intensidade4);
+    std::vector<Light*> pontual = teste->getLights();
+    //std::cout << pontual.size();
+    for(const auto i : pontual){
+      scene.addLight(i);
+    }
+
 
   //scene.addObject(new Sphere(Point3(0,0,-1), 0.5, Material_extra));
   //scene.addObject(new Sphere(Point3(-1,0,-1), 0.5, toon3)); //lado esquerdo
@@ -236,10 +226,10 @@ int main () {
   //scene.addObject(t);
   //scene.addObject(new Triangule(Point3(0,1,-1),Point3(1, 2, -1),Point3(0,2,-1),true, MaterialS1));
 
-  Raytracer r(c, scene, s, nb_sample );
-  Image img = r.render("img1 "+time_file, n_col, n_row);
-  if (properties[CODIFICATION] == "binary"){ img.create_by_binary(); }
-  else if (properties[CODIFICATION] == "ascii") { img.create_by_ascii();}
-  else{std::cerr << "Codification not accepted (yet)" << std::endl;}
+    Raytracer r(c, scene, s, nb_sample );
+    Image img = r.render("img1 "+time_file, n_col, n_row);
+    if (properties[CODIFICATION] == "binary"){ img.create_by_binary(); }
+    else if (properties[CODIFICATION] == "ascii") { img.create_by_ascii();}
+    else{std::cerr << "Codification not accepted (yet)" << std::endl;}
 
 }

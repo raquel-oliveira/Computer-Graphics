@@ -3,6 +3,7 @@
 #include "vec3.h"
 #include <string>
 #include <cmath>
+#include <random>
 #define PI 3.14159265
 
 //https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/shading-lights
@@ -93,5 +94,56 @@ class SpotLight : public Light {
 
     inline Vec3 get_l(Point3 hit);
 
+};
+
+class AreaLight : public Light {
+  private:
+    Point3 upper_left_corner;
+    Vec3 vertical_axis;
+    Vec3 horizontal_axis;
+    int samples;
+    std::vector<Light*> lights;
+    int nx;
+    int ny;
+
+  public:
+    AreaLight(Point3 ulc, Vec3 h, Vec3 w, int s, int x, int y, Color3 i)
+        : Light(i)
+        , upper_left_corner(ulc)
+        , vertical_axis(h)
+        , horizontal_axis(w)
+        , nx(x), ny(y)
+        , samples(s) {
+          float stepX = 1.0/nx;
+          float stepY = 1.0/ny;
+          Color3 sub_intensity = intensity/(nx*ny*samples);
+          std::random_device rd;
+          std::mt19937 gen(rd());
+          //TODO: not put always in the center of the pixel
+          for(float i = 0; i <= 1.03; i+=stepX){
+            for (float j=0; j <= 1.03; j+=stepY){
+              for (int k = 0; k < samples; k++){
+                float deltax = std::generate_canonical<float, 9> (gen)*0.01;
+                float deltay = std::generate_canonical<float, 9> (gen)*0.01;
+                Point3 origin = upper_left_corner + (vertical_axis+deltax)*i + (horizontal_axis+deltay)*j;
+                lights.push_back(new PontualLight(sub_intensity, origin));
+              //  std::cout << lights.size() << std::endl;
+              }
+
+            }
+          }
+        }
+
+    inline std::vector<Light*> getLights(){
+      return lights;
+    }
+
+    std::string get_info(std::string tab){
+      return "Todo";
+    }
+
+    inline Vec3 get_l(Point3 hit){
+      return Vec3(0,0,0);
+    }
 };
 #endif
