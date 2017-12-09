@@ -18,7 +18,7 @@ std::string LambertianMaterial::get_info(std::string tab){
   std::ostringstream info;
   info << tab << "Lambertian Material:\n";
   if (hasTexture){
-    info << albedo->get_info(tab+"\n");
+    info << albedo->get_info(tab+"\t");
   } else{
     info << tab << "\tDifuse reflection" << k_d << "\n";
   }
