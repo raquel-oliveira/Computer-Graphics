@@ -43,8 +43,10 @@ class Checker_texture : public Texture{
       std::ostringstream info;
 
       info << tab <<"Checker Texture: \n";
-      info << odd->get_info(tab+"\n");
-      info << even->get_info(tab+"\n");
+      info << tab <<"\tTexture1: \n";
+      info << odd->get_info(tab+"\t");
+      info << tab <<"\tTexture2: \n";
+      info << even->get_info(tab+"\t");
 
       return info.str();
     }

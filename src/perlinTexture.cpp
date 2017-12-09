@@ -63,6 +63,6 @@ std::string Perlin_texture::get_info(std::string tab){
   std::ostringstream info;
 
   info << tab << "Perlin Texture: \n";
-  info << tab << "\t Scale: " << scale << "\n";
+  info << tab << "\tScale: " << scale << "\n";
   return info.str();
 }
